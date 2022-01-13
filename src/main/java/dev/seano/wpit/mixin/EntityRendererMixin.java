@@ -76,11 +76,11 @@ public class EntityRendererMixin<T extends Entity> {
             double dis = dispatcher.getSquaredDistanceToCamera(entity);
             // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
             if (dis <= 4096D) {
-                float y = entity.getHeight() + 0.5F;
+                float y = entity.hasCustomName() ? 0.75F : 0.5F;
                 float scale = 0.025F;
 
                 matrices.push();
-                matrices.translate(0, y, 0);
+                matrices.translate(0, entity.getHeight() + y, 0);
                 matrices.multiply(dispatcher.getRotation());
                 matrices.scale(-scale, -scale, scale);
 
