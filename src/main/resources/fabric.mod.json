@@ -32,6 +32,7 @@
     "minecraft": "1.18.1"
   },
   "recommends": {
+    "cloth-config": ">=6.0.42",
     "modmenu": ">=3.0.0"
   }
 }
