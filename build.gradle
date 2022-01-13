@@ -3,7 +3,9 @@ plugins {
     id 'maven-publish'
 }
 
+//noinspection GroovyAssignabilityCheck
 version = project.mod_version
+//noinspection GroovyAssignabilityCheck
 group = project.maven_group
 
 repositories {
