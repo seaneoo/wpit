@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "EntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
