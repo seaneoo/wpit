@@ -4,9 +4,15 @@
   "version": "${version}",
   "name": "WPIT",
   "description": "Whose Pet Is That?",
-  "authors": [],
-  "contact": {},
-  "license": "MIT",
+  "authors": [
+    "Sean O'Connor"
+  ],
+  "contact": {
+    "email": "so@seano.dev",
+    "sources": "https://github.com/seaneoo/wpit",
+    "issues": "https://github.com/seaneoo/wpit/issues"
+  },
+  "license": "BSD-3-Clause",
   "icon": "assets/wpit/icon.png",
   "environment": "*",
   "entrypoints": {
