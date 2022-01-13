@@ -58,10 +58,12 @@ public class EntityRendererMixin<T extends Entity> {
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
     private void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         if (entity instanceof TameableEntity || entity instanceof HorseBaseEntity) {
+            // Do not render if the mod is disabled
+            if (!WPIT.getInstance().getConfig().enabled) return;
             // Do not render nameplate if hud is hidden
             if (WPIT.minecraft.options.hudHidden) return;
             // Do not render if the targetedEntity is not the entity
-            if (dispatcher.targetedEntity != entity) return;
+            if (dispatcher.targetedEntity != entity && !WPIT.getInstance().getConfig().alwaysDisplay) return;
 
             UUID ownerUuid = getEntityOwner(entity);
             // Do not render if the owner is not found
@@ -77,7 +79,7 @@ public class EntityRendererMixin<T extends Entity> {
             // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
             if (dis <= 4096D) {
                 float y = entity.hasCustomName() ? 0.75F : 0.5F;
-                float scale = 0.025F;
+                float scale = 0.025F * (WPIT.getInstance().getConfig().scale / 100F);
 
                 matrices.push();
                 matrices.translate(0, entity.getHeight() + y, 0);
