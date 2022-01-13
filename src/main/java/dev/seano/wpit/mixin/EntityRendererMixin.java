@@ -19,9 +19,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.UUID;
+
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity> {
+
+    private UUID getEntityOwner(T entity) {
+        if (entity instanceof TameableEntity e) { // Wolf, Cat
+            if (e.isTamed()) return e.getOwnerUuid();
+        } else if (entity instanceof HorseBaseEntity e) { // Horse, Donkey, Mule, Llama
+            if (e.isTame()) return e.getOwnerUuid();
+        }
+        return null;
+    }
 
     // Render a nameplate for the name of the entity's owner
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
