@@ -20,27 +20,27 @@ import java.util.concurrent.TimeUnit;
 
 public class UserCacheManager {
 
-    private static final LoadingCache<UUID, Optional<String>> userCache;
+    private static final LoadingCache<UUID, Optional<GameProfile>> userCache;
 
     static {
         userCache = CacheBuilder.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).build(new CacheLoader<>() {
             @Override
-            public @NotNull Optional<String> load(@NotNull UUID uuid) {
+            public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
                 CompletableFuture.runAsync(() -> {
                     GameProfile gameProfile = new GameProfile(uuid, null);
                     gameProfile = WPIT.minecraft.getSessionService().fillProfileProperties(gameProfile, false);
-                    userCache.put(uuid, Optional.ofNullable(gameProfile.getName()));
+                    userCache.put(uuid, Optional.ofNullable(gameProfile));
                 });
                 return Optional.empty();
             }
         });
     }
 
-    public static LoadingCache<UUID, Optional<String>> getUserCache() {
+    public static LoadingCache<UUID, Optional<GameProfile>> getUserCache() {
         return userCache;
     }
 
-    public static Optional<String> getUsername(UUID uuid) {
+    public static Optional<GameProfile> getProfile(UUID uuid) {
         try {
             return getUserCache().get(uuid);
         } catch (ExecutionException e) {
