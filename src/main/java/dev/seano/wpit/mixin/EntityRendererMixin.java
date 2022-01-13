@@ -91,7 +91,7 @@ public class EntityRendererMixin<T extends Entity> {
                 int j = (int) (bgOpacity * 255.0f) << 24;
                 float h = -textRenderer.getWidth(text) / 2F;
                 textRenderer.draw(text, h, 0, 0x20FFFFFF, false, matrix4f, vertexConsumers, true, j, light);
-                textRenderer.draw(text, h, 0, -1, false, matrix4f, vertexConsumers, false, 0, light);
+                textRenderer.draw(text, h, 0, WPIT.getInstance().getConfig().color.getHexadecimal(), false, matrix4f, vertexConsumers, false, 0, light);
 
                 matrices.pop();
             }

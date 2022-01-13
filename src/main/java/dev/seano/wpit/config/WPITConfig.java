@@ -23,4 +23,6 @@ public class WPITConfig implements ConfigData {
     // Size of the nameplate (relative to the default scale)
     @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
     public int scale = 100;
+
+    public Color color = Color.WHITE;
 }

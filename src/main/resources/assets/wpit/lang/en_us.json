@@ -3,5 +3,6 @@
   "text.autoconfig.wpit.title": "WPIT Options",
   "text.autoconfig.wpit.option.enabled": "Enable mod?",
   "text.autoconfig.wpit.option.alwaysDisplay": "Always display nameplate?",
-  "text.autoconfig.wpit.option.scale": "Nameplate scale %"
+  "text.autoconfig.wpit.option.scale": "Nameplate scale %",
+  "text.autoconfig.wpit.option.color": "Text color"
 }
