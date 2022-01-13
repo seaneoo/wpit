@@ -20,7 +20,7 @@
       "dev.seano.wpit.WPIT"
     ],
     "modmenu": [
-      "dev.seano.wpit.client.WPITModMenu"
+      "dev.seano.wpit.config.WPITModMenu"
     ]
   },
   "mixins": [
