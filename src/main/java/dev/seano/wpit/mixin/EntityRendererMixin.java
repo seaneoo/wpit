@@ -64,6 +64,8 @@ public class EntityRendererMixin<T extends Entity> {
             if (WPIT.minecraft.options.hudHidden) return;
             // Do not render if the targetedEntity is not the entity
             if (dispatcher.targetedEntity != entity && !WPIT.getInstance().getConfig().alwaysDisplay) return;
+            // Do not render if the player is a passenger on the entity
+            if (entity.hasPassenger(WPIT.minecraft.player)) return;
 
             UUID ownerUuid = getEntityOwner(entity);
             // Do not render if the owner is not found
