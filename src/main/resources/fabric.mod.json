@@ -14,13 +14,13 @@
   },
   "license": "BSD-3-Clause",
   "icon": "assets/wpit/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
-      "dev.seano.wpit.client.WPITClient"
-    ],
-    "main": [
       "dev.seano.wpit.WPIT"
+    ],
+    "modmenu": [
+      "dev.seano.wpit.client.WPITModMenu"
     ]
   },
   "mixins": [
