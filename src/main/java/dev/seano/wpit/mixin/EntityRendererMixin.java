@@ -21,6 +21,7 @@ import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -70,7 +71,7 @@ public class EntityRendererMixin<T extends Entity> {
             // Do not render if profile is not found
             if (owner.isEmpty()) return;
 
-            Text text = new LiteralText("%s".formatted(owner.get().getName()));
+            Text text = new TranslatableText("wpit.text.nameplate", owner.get().getName());
 
             double dis = dispatcher.getSquaredDistanceToCamera(entity);
             // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
