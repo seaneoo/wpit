@@ -12,6 +12,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,6 +20,7 @@ import org.apache.logging.log4j.Logger;
 public class WPIT implements ClientModInitializer {
 
     public static final String ID = "wpit";
+    public static final MinecraftClient minecraft = MinecraftClient.getInstance();
 
     private static WPIT INSTANCE;
     private Logger logger;
