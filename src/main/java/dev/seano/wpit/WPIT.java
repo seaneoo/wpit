@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2022 Sean O'Connor. All rights reserved.
+ * Licensed under the BSD 3-Clause "New" or "Revised" License.
+ * https://spdx.org/licenses/BSD-3-Clause.html
+ */
+
 package dev.seano.wpit;
 
 import dev.seano.wpit.config.WPITConfig;
