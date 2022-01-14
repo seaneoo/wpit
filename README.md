@@ -1,4 +1,4 @@
-![](https://i.imgur.com/vIjdDyj.png)
+![](https://i.imgur.com/h20V6ci.png)
 
 ![Environment](https://img.shields.io/badge/environment-client-1976d2) ![Fabric](https://img.shields.io/badge/mod%20loader-fabric-d64541) ![License](https://img.shields.io/github/license/seaneoo/wpit)
 
