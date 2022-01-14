@@ -1,9 +1,8 @@
-<img src="https://i.imgur.com/vIjdDyj.png" alt="" width="75%">
+![](https://i.imgur.com/vIjdDyj.png)
 
 ![Environment](https://img.shields.io/badge/environment-client-1976d2) ![Fabric](https://img.shields.io/badge/mod%20loader-fabric-d64541) ![License](https://img.shields.io/github/license/seaneoo/wpit)
 
-WPIT (Whose Pet Is That?) is a **Fabric** mod that allows you to easily see the owner of a pet¹. This mod is 100% **
-client-side**, putting it on the server will do nothing.
+WPIT (Whose Pet Is That?) is a **Fabric** mod that allows you to easily see the owner of a pet¹. This mod is 100% **client-side**, putting it on the server will do nothing.
 
 Requires [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config). Optionally, you may
