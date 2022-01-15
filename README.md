@@ -1,14 +1,16 @@
 ![](https://i.imgur.com/h20V6ci.png)
 
-![Environment](https://img.shields.io/badge/environment-client-1976d2) ![Fabric](https://img.shields.io/badge/mod%20loader-fabric-d64541) ![License](https://img.shields.io/github/license/seaneoo/wpit) ![GitHub all releases](https://img.shields.io/github/downloads/seaneoo/wpit/total)
+![](https://img.shields.io/badge/version-1.18.1-white?style=flat-square&color=red)
+[![](https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth%20downloads&query=downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fapi%2Fv1%2Fmod%2FUK8n9eQD)](https://modrinth.com/mod/wpit)
+![](https://img.shields.io/github/downloads/seaneoo/wpit/total?style=flat-square&label=github%20downloads&color=58A6FF)
 
-WPIT (Whose Pet Is That?) is a **Fabric** mod that allows you to easily see the owner of a pet¹. This mod is 100% **client-side**, putting it on the server will do nothing.
+WPIT (Whose Pet Is That?) is a 1.18.1+ Fabric mod that allows you to easily see the owner of a pet¹. Simply hover your crosshair over a tamed pet and the owner's name will display above it. This mod is 100% client-side, putting it on the server will do nothing.
 
 Requires [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config). Optionally, you may
-add [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) to access the options in-game.
+add [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) to access the options screen in-game.
 
-¹A wolf, cat, parrot, horse, donkey, mule, or llama.
+¹Wolves, cats, parrots, horses, donkeys, mules, and llamas.
 
 ## Options
 
