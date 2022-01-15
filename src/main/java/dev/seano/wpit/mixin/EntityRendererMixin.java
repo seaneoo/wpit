@@ -21,7 +21,6 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
@@ -32,6 +31,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,13 +40,13 @@ import java.util.UUID;
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity> {
 
-    private UUID getEntityOwner(T entity) {
+    private List<UUID> getEntityOwners(T entity) {
         if (entity instanceof TameableEntity e) { // Wolf, Cat
-            if (e.isTamed()) return e.getOwnerUuid();
+            if (e.isTamed()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof HorseBaseEntity e) { // Horse, Donkey, Mule, Llama
-            if (e.isTame()) return e.getOwnerUuid();
+            if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
         }
-        return null;
+        return Collections.emptyList();
     }
 
     @Shadow
@@ -69,35 +70,38 @@ public class EntityRendererMixin<T extends Entity> {
             // Do not render if the player is a passenger on the entity
             if (entity.hasPassenger(WPIT.minecraft.player)) return;
 
-            UUID ownerUuid = getEntityOwner(entity);
-            // Do not render if the owner is not found
-            if (ownerUuid == null) return;
+            List<UUID> uuids = getEntityOwners(entity);
+            // Do not render if no owners are found
+            if (uuids.isEmpty()) return;
 
-            Optional<GameProfile> owner = UserCacheManager.getProfile(ownerUuid);
-            // Do not render if profile is not found
-            if (owner.isEmpty()) return;
+            for (int i = 0; i < uuids.size(); i++) {
+                Optional<GameProfile> owner = UserCacheManager.getProfile(uuids.get(i));
+                // Do not render if profile is not found
+                if (owner.isEmpty()) return;
 
-            Text text = new TranslatableText("wpit.text.nameplate", owner.get().getName());
+                Text text = new TranslatableText("wpit.text.nameplate", owner.get().getName());
 
-            double dis = dispatcher.getSquaredDistanceToCamera(entity);
-            // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
-            if (dis <= 4096D) {
-                float y = entity.hasCustomName() ? 0.75F : 0.5F;
-                float scale = 0.025F * (WPIT.getInstance().getConfig().scale / 100F);
+                double dis = dispatcher.getSquaredDistanceToCamera(entity);
+                // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
+                if (dis <= 4096D) {
+                    float translateY = entity.hasCustomName() ? 0.75F : 0.5F;
+                    float scale = 0.025F * (WPIT.getInstance().getConfig().scale / 100F);
+                    float posY = 10 * i;
 
-                matrices.push();
-                matrices.translate(0, entity.getHeight() + y, 0);
-                matrices.multiply(dispatcher.getRotation());
-                matrices.scale(-scale, -scale, scale);
+                    matrices.push();
+                    matrices.translate(0, entity.getHeight() + translateY, 0);
+                    matrices.multiply(dispatcher.getRotation());
+                    matrices.scale(-scale, -scale, scale);
 
-                Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-                float bgOpacity = WPIT.minecraft.options.getTextBackgroundOpacity(0.25F);
-                int j = (int) (bgOpacity * 255.0f) << 24;
-                float h = -textRenderer.getWidth(text) / 2F;
-                textRenderer.draw(text, h, 0, 0x20FFFFFF, false, matrix4f, vertexConsumers, true, j, light);
-                textRenderer.draw(text, h, 0, WPIT.getInstance().getConfig().color.getHexadecimal(), false, matrix4f, vertexConsumers, false, 0, light);
+                    Matrix4f matrix4f = matrices.peek().getPositionMatrix();
+                    float bgOpacity = WPIT.minecraft.options.getTextBackgroundOpacity(0.25F);
+                    int j = (int) (bgOpacity * 255.0f) << 24;
+                    float h = -textRenderer.getWidth(text) / 2F;
+                    textRenderer.draw(text, h, posY, 0x20FFFFFF, false, matrix4f, vertexConsumers, true, j, light);
+                    textRenderer.draw(text, h, posY, WPIT.getInstance().getConfig().color.getHexadecimal(), false, matrix4f, vertexConsumers, false, 0, light);
 
-                matrices.pop();
+                    matrices.pop();
+                }
             }
         }
     }
