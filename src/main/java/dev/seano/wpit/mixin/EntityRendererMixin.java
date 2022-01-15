@@ -1,7 +1,9 @@
 /*
- * Copyright (c) 2022 Sean O'Connor. All rights reserved.
- * Licensed under the BSD 3-Clause "New" or "Revised" License.
- * https://spdx.org/licenses/BSD-3-Clause.html
+ * This is free and unencumbered software released into the public domain.
+ * Anyone is free to copy, modify, publish, use, compile, sell, or
+ * distribute this software, either in source code form or as a compiled
+ * binary, for any purpose, commercial or non-commercial, and by any
+ * means.
  */
 
 package dev.seano.wpit.mixin;

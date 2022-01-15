@@ -12,7 +12,7 @@
     "sources": "https://github.com/seaneoo/wpit",
     "issues": "https://github.com/seaneoo/wpit/issues"
   },
-  "license": "BSD-3-Clause",
+  "license": "Unlicense",
   "icon": "assets/wpit/icon.png",
   "environment": "client",
   "entrypoints": {
