@@ -8,6 +8,7 @@
 
 package dev.seano.wpit.mixin;
 
+import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import dev.seano.wpit.UserCacheManager;
 import dev.seano.wpit.WPIT;
@@ -19,6 +20,7 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
@@ -31,20 +33,27 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity> {
+
+    // Custom implementation of FoxEntity:getTrustedUuids since I couldn't get it to work :-(
+    private List<UUID> getFoxTrustedUuids(FoxEntity entity) {
+        ArrayList<UUID> list = Lists.newArrayList();
+        list.add(entity.getDataTracker().get(((FoxEntityInvoker) entity).getOwnerData()).orElse(null));
+        list.add(entity.getDataTracker().get(((FoxEntityInvoker) entity).getOtherTrustedData()).orElse(null));
+        return list;
+    }
 
     private List<UUID> getEntityOwners(T entity) {
         if (entity instanceof TameableEntity e) { // Wolf, Cat, Parrot
             if (e.isTamed()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof HorseBaseEntity e) { // Horse, Donkey, Mule, Llama
             if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
+        } else if (entity instanceof FoxEntity e) { // Fox
+            return getFoxTrustedUuids(e);
         }
         return Collections.emptyList();
     }
@@ -60,7 +69,7 @@ public class EntityRendererMixin<T extends Entity> {
     // Render a nameplate for the name of the entity's owner
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
     private void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (entity instanceof TameableEntity || entity instanceof HorseBaseEntity) {
+        if (entity instanceof TameableEntity || entity instanceof HorseBaseEntity || entity instanceof FoxEntity) {
             // Do not render if the mod is disabled
             if (!WPIT.getInstance().getConfig().enabled) return;
             // Do not render nameplate if hud is hidden
@@ -75,6 +84,8 @@ public class EntityRendererMixin<T extends Entity> {
             if (uuids.isEmpty()) return;
 
             for (int i = 0; i < uuids.size(); i++) {
+                // Return if the element in the array is null
+                if (uuids.get(i) == null) return;
                 Optional<GameProfile> owner = UserCacheManager.getProfile(uuids.get(i));
                 // Do not render if profile is not found
                 if (owner.isEmpty()) return;

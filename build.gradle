@@ -1,3 +1,4 @@
+//file:noinspection GrUnresolvedAccess
 plugins {
     id 'fabric-loom' version '0.10-SNAPSHOT'
     id 'maven-publish'
@@ -7,6 +8,10 @@ plugins {
 version = project.mod_version
 //noinspection GroovyAssignabilityCheck
 group = project.maven_group
+
+loom {
+    accessWidenerPath = file("src/main/resources/wpit.accesswidener")
+}
 
 repositories {
     maven { url "https://maven.shedaniel.me/" }
