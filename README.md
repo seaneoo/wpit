@@ -1,6 +1,6 @@
 ![](https://i.imgur.com/h20V6ci.png)
 
-![](https://img.shields.io/badge/version-1.18.1-white?style=flat-square&color=red)
+![](https://img.shields.io/badge/mc%20version-1.18.1-white?style=flat-square&color=red)
 [![](https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth%20downloads&query=downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fapi%2Fv1%2Fmod%2FUK8n9eQD)](https://modrinth.com/mod/wpit)
 ![](https://img.shields.io/github/downloads/seaneoo/wpit/total?style=flat-square&label=github%20downloads&color=58A6FF)
 
@@ -12,7 +12,7 @@ Requires [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 and [Cloth Config](https://www.curseforge.com/minecraft/mc-mods/cloth-config). Optionally, you may
 add [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) to access the options screen in-game.
 
-¹Wolves, cats, parrots, horses, donkeys, mules, and llamas.
+¹Wolves, cats, parrots, foxes, horses, donkeys, mules, and llamas.
 
 ## Options
 
@@ -36,6 +36,9 @@ You have my full permission to use this mod in modpacks. If you do, I'd love to 
 <br/><br/>
 ![](https://i.imgur.com/S7IBZfR.png)
 *A parrot tamed by player "seano" with the "Text color" option set to _GOLD_.*
+<br/><br/>
+![](https://i.imgur.com/fbuYB2s.png)
+*A fox named "Mr. Fox" who trust players "MoozleVidaLeia" and "seano".*
 <br/><br/>
 ![](https://i.imgur.com/VoFRq1K.png)
 *The options screen for WPIT showing the four settings. Accessed through Mod Menu.*
