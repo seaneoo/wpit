@@ -97,7 +97,7 @@ public class EntityRendererMixin<T extends Entity> {
                 if (dis <= 4096D) {
                     float translateY = entity.hasCustomName() ? 0.75F : 0.5F;
                     float scale = 0.025F * (WPIT.getInstance().getConfig().scale / 100F);
-                    float posY = 10 * i;
+                    float posY = -10 * i;
 
                     matrices.push();
                     matrices.translate(0, entity.getHeight() + translateY, 0);
