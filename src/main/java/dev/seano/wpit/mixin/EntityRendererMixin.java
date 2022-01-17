@@ -41,7 +41,7 @@ import java.util.UUID;
 public class EntityRendererMixin<T extends Entity> {
 
     private List<UUID> getEntityOwners(T entity) {
-        if (entity instanceof TameableEntity e) { // Wolf, Cat
+        if (entity instanceof TameableEntity e) { // Wolf, Cat, Parrot
             if (e.isTamed()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof HorseBaseEntity e) { // Horse, Donkey, Mule, Llama
             if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
