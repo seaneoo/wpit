@@ -54,7 +54,8 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
 
-    archivesBaseName = project.archives_base_name
+    project.version = ""
+    archivesBaseName = "${project.archives_base_name}-${project.mod_version}-${project.minecraft_version}"
     withSourcesJar()
 }
 
