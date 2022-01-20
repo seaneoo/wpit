@@ -4,9 +4,8 @@ plugins {
     id 'maven-publish'
 }
 
-//noinspection GroovyAssignabilityCheck
+archivesBaseName = "${project.archives_base_name}-mc${project.minecraft_version}"
 version = project.mod_version
-//noinspection GroovyAssignabilityCheck
 group = project.maven_group
 
 loom {
@@ -55,7 +54,6 @@ java {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
 
-    archivesBaseName = project.archives_base_name
     withSourcesJar()
 }
 
