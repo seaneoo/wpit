@@ -24,6 +24,7 @@ Currently, there are four options that can be configured to your liking.
 - **Nameplate scale %** The scale of the owner's nameplate relative to the default size (50 is 50% of the default size).
 - **Text color** Changes the color of the owner's nameplate. If you edit this in-game, it will autocomplete valid
   inputs.
+- **Show secondary owners?** If set to _yes_, only one owner of a pet will be displayed. Mainly used for foxes.
 
 ## Modpacks
 
@@ -40,6 +41,6 @@ You have my full permission to use this mod in modpacks. If you do, I'd love to 
 ![](https://i.imgur.com/fbuYB2s.png)
 *A fox named "Mr. Fox" who trust players "MoozleVidaLeia" and "seano".*
 <br/><br/>
-![](https://i.imgur.com/VoFRq1K.png)
+![](https://i.imgur.com/BXFX62e.png)
 *The options screen for WPIT showing the four settings. Accessed through Mod Menu.*
 <br/><br/>
