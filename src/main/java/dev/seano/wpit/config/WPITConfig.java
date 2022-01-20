@@ -16,15 +16,19 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 @Config(name = WPIT.ID)
 public class WPITConfig implements ConfigData {
 
-    // Enable or disable the mod
+    // Turn the features of the mod on or off
     public boolean enabled = true;
 
-    // Display the nameplates, even if you aren't looking at the entity
+    // Whether the nameplate should always show up
     public boolean alwaysDisplay = false;
 
-    // Size of the nameplate (relative to the default scale)
+    // The size of the nameplate (relative to the default size)
     @ConfigEntry.BoundedDiscrete(min = 0, max = 100)
     public int scale = 100;
 
+    // Changes the color of the nameplate text
     public Color color = Color.WHITE;
+
+    // Whether to display the secondary owners of an entity
+    public boolean showSecondaryOwners = true;
 }

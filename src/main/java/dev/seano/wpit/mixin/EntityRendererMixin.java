@@ -113,6 +113,9 @@ public class EntityRendererMixin<T extends Entity> {
 
                     matrices.pop();
                 }
+
+                // Do not render more the one nameplate
+                if (!WPIT.getInstance().getConfig().showSecondaryOwners && i == 0) return;
             }
         }
     }
