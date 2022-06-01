@@ -20,10 +20,11 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.passive.HorseBaseEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
 import net.minecraft.util.math.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,19 +42,15 @@ public class EntityRendererMixin<T extends Entity> {
     // Custom implementation of FoxEntity:getTrustedUuids since I couldn't get it to work :-(
     private List<UUID> getFoxTrustedUuids(FoxEntity entity) {
         ArrayList<UUID> list = Lists.newArrayList();
-        list.add(entity.getDataTracker()
-                .get(((FoxEntityInvoker) entity).getOwnerData())
-                .orElse(null));
-        list.add(entity.getDataTracker()
-                .get(((FoxEntityInvoker) entity).getOtherTrustedData())
-                .orElse(null));
+        list.add(entity.getDataTracker().get(((FoxEntityInvoker) entity).getOwnerData()).orElse(null));
+        list.add(entity.getDataTracker().get(((FoxEntityInvoker) entity).getOtherTrustedData()).orElse(null));
         return list;
     }
 
     private List<UUID> getEntityOwners(T entity) {
         if (entity instanceof TameableEntity e) { // Wolf, Cat, Parrot
             if (e.isTamed()) return Collections.singletonList(e.getOwnerUuid());
-        } else if (entity instanceof AbstractHorseEntity e) { // Horse, Donkey, Mule, Llama
+        } else if (entity instanceof HorseBaseEntity e) { // Horse, Donkey, Mule, Llama
             if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof FoxEntity e) { // Fox
             return getFoxTrustedUuids(e);
@@ -71,17 +68,14 @@ public class EntityRendererMixin<T extends Entity> {
 
     // Render a nameplate for the name of the entity's owner
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
-    private void render(T entity, float yaw, float tickDelta, MatrixStack matrices,
-                        VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (entity instanceof TameableEntity || entity instanceof AbstractHorseEntity || entity instanceof FoxEntity) {
+    private void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+        if (entity instanceof TameableEntity || entity instanceof HorseBaseEntity || entity instanceof FoxEntity) {
             // Do not render if the mod is disabled
-            if (!WPIT.getInstance()
-                    .getConfig().enabled) return;
+            if (!WPIT.getInstance().getConfig().enabled) return;
             // Do not render nameplate if hud is hidden
             if (WPIT.minecraft.options.hudHidden) return;
             // Do not render if the targetedEntity is not the entity
-            if (dispatcher.targetedEntity != entity && !WPIT.getInstance()
-                    .getConfig().alwaysDisplay) return;
+            if (dispatcher.targetedEntity != entity && !WPIT.getInstance().getConfig().alwaysDisplay) return;
             // Do not render if the player is a passenger on the entity
             if (entity.hasPassenger(WPIT.minecraft.player)) return;
 
@@ -96,15 +90,13 @@ public class EntityRendererMixin<T extends Entity> {
                 // Do not render if profile is not found
                 if (owner.isEmpty()) return;
 
-                Text text = Text.translatable("wpit.text.nameplate", owner.get()
-                        .getName());
+                Text text = new TranslatableText("wpit.text.nameplate", owner.get().getName());
 
                 double dis = dispatcher.getSquaredDistanceToCamera(entity);
                 // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
                 if (dis <= 4096D) {
                     float translateY = entity.hasCustomName() ? 0.75F : 0.5F;
-                    float scale = 0.025F * (WPIT.getInstance()
-                            .getConfig().scale / 100F);
+                    float scale = 0.025F * (WPIT.getInstance().getConfig().scale / 100F);
                     float posY = -10 * i;
 
                     matrices.push();
@@ -112,21 +104,18 @@ public class EntityRendererMixin<T extends Entity> {
                     matrices.multiply(dispatcher.getRotation());
                     matrices.scale(-scale, -scale, scale);
 
-                    Matrix4f matrix4f = matrices.peek()
-                            .getPositionMatrix();
+                    Matrix4f matrix4f = matrices.peek().getPositionMatrix();
                     float bgOpacity = WPIT.minecraft.options.getTextBackgroundOpacity(0.25F);
                     int j = (int) (bgOpacity * 255.0f) << 24;
                     float h = -textRenderer.getWidth(text) / 2F;
                     textRenderer.draw(text, h, posY, 0x20FFFFFF, false, matrix4f, vertexConsumers, true, j, light);
-                    textRenderer.draw(text, h, posY, WPIT.getInstance()
-                            .getConfig().color.getHexadecimal(), false, matrix4f, vertexConsumers, false, 0, light);
+                    textRenderer.draw(text, h, posY, WPIT.getInstance().getConfig().color.getHexadecimal(), false, matrix4f, vertexConsumers, false, 0, light);
 
                     matrices.pop();
                 }
 
                 // Do not render more the one nameplate
-                if (!WPIT.getInstance()
-                        .getConfig().showSecondaryOwners && i == 0) return;
+                if (!WPIT.getInstance().getConfig().showSecondaryOwners && i == 0) return;
             }
         }
     }
