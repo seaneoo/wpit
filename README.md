@@ -1,10 +1,11 @@
 ![](https://i.imgur.com/h20V6ci.png)
 
 ![](https://img.shields.io/badge/mc%20version-1.18.2-white?style=flat-square&color=red)
+![](https://img.shields.io/badge/mc%20version-1.19%20pre5-white?style=flat-square&color=red)
 [![](https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth%20downloads&query=downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fapi%2Fv1%2Fmod%2FUK8n9eQD)](https://modrinth.com/mod/wpit)
 ![](https://img.shields.io/github/downloads/seaneoo/wpit/total?style=flat-square&label=github%20downloads&color=58A6FF)
 
-WPIT (Whose Pet Is That?) is a 1.18+ Fabric mod that allows you to easily see the owner of a pet¹. Simply hover your
+WPIT (Whose Pet Is That?) is a 1.18.2 and 1.19 Fabric mod that allows you to easily see the owner of a pet¹. Simply hover your
 crosshair over a tamed pet and the owner's name will display above it. This mod is 100% client-side, putting it on the
 server will do nothing.
 
