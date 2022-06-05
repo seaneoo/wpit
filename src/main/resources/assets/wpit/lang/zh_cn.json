@@ -1,0 +1,9 @@
+{
+  "wpit.text.nameplate": "%s",
+  "text.autoconfig.wpit.title": "WPIT选项",
+  "text.autoconfig.wpit.option.enabled": "是否启用？",
+  "text.autoconfig.wpit.option.alwaysDisplay": "是否总是显示铭牌？",
+  "text.autoconfig.wpit.option.scale": "铭牌比例 %",
+  "text.autoconfig.wpit.option.color": "文本颜色",
+  "text.autoconfig.wpit.option.showSecondaryOwners": "是否显示次等主人？"
+}
