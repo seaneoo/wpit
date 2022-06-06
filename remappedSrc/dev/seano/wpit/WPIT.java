@@ -20,7 +20,6 @@ import org.apache.logging.log4j.Logger;
 
 @Environment(EnvType.CLIENT)
 public class WPIT implements ClientModInitializer {
-
     public static final String ID = "wpit";
     public static final MinecraftClient minecraft = MinecraftClient.getInstance();
 
@@ -34,7 +33,8 @@ public class WPIT implements ClientModInitializer {
         logger = LogManager.getLogger(ID);
 
         AutoConfig.register(WPITConfig.class, JanksonConfigSerializer::new);
-        config = AutoConfig.getConfigHolder(WPITConfig.class).getConfig();
+        config = AutoConfig.getConfigHolder(WPITConfig.class)
+                .getConfig();
     }
 
     public static WPIT getInstance() {

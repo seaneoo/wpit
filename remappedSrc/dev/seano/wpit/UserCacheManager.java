@@ -25,17 +25,20 @@ public class UserCacheManager {
     private static final LoadingCache<UUID, Optional<GameProfile>> userCache;
 
     static {
-        userCache = CacheBuilder.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).build(new CacheLoader<>() {
-            @Override
-            public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
-                CompletableFuture.runAsync(() -> {
-                    GameProfile gameProfile = new GameProfile(uuid, null);
-                    gameProfile = WPIT.minecraft.getSessionService().fillProfileProperties(gameProfile, false);
-                    userCache.put(uuid, Optional.ofNullable(gameProfile));
+        userCache = CacheBuilder.newBuilder()
+                .expireAfterWrite(6, TimeUnit.HOURS)
+                .build(new CacheLoader<>() {
+                    @Override
+                    public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
+                        CompletableFuture.runAsync(() -> {
+                            GameProfile gameProfile = new GameProfile(uuid, null);
+                            gameProfile = WPIT.minecraft.getSessionService()
+                                    .fillProfileProperties(gameProfile, false);
+                            userCache.put(uuid, Optional.ofNullable(gameProfile));
+                        });
+                        return Optional.empty();
+                    }
                 });
-                return Optional.empty();
-            }
-        });
     }
 
     public static LoadingCache<UUID, Optional<GameProfile>> getUserCache() {
