@@ -1,7 +1,7 @@
 ![](https://i.imgur.com/h20V6ci.png)
 
 ![](https://img.shields.io/badge/mc%20version-1.18.2-white?style=flat-square&color=red)
-![](https://img.shields.io/badge/mc%20version-1.19%20rc2-white?style=flat-square&color=red)
+![](https://img.shields.io/badge/mc%20version-1.19-white?style=flat-square&color=red)
 [![](https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth%20downloads&query=downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fapi%2Fv1%2Fmod%2FUK8n9eQD)](https://modrinth.com/mod/wpit)
 ![](https://img.shields.io/github/downloads/seaneoo/wpit/total?style=flat-square&label=github%20downloads&color=58A6FF)
 
