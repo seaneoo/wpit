@@ -7,6 +7,9 @@
   "authors": [
     "Sean O'Connor"
   ],
+  "contributors": [
+    "IceAlin"
+  ],
   "contact": {
     "email": "so@seano.dev",
     "sources": "https://github.com/seaneoo/wpit",
@@ -28,7 +31,7 @@
   ],
   "accessWidener": "wpit.accesswidener",
   "depends": {
-    "minecraft": "1.19-rc.2",
+    "minecraft": "1.19",
     "fabricloader": ">=0.14.6",
     "fabric": ">=0.55.1+1.19",
     "cloth-config": ">=7.0.65"
