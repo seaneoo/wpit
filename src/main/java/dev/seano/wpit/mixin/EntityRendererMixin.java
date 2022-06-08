@@ -20,7 +20,9 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ai.brain.MemoryModuleType;
 import net.minecraft.entity.passive.AbstractHorseEntity;
+import net.minecraft.entity.passive.AllayEntity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
@@ -57,6 +59,10 @@ public class EntityRendererMixin<T extends Entity> {
             if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof FoxEntity e) { // Fox
             return getFoxTrustedUuids(e);
+        } else if (entity instanceof AllayEntity e) { // Allay
+            Optional<UUID> optional = e.getBrain()
+                    .getOptionalMemory(MemoryModuleType.LIKED_PLAYER);
+            if (optional.isPresent()) return Collections.singletonList(optional.get());
         }
         return Collections.emptyList();
     }
@@ -73,7 +79,7 @@ public class EntityRendererMixin<T extends Entity> {
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
     private void render(T entity, float yaw, float tickDelta, MatrixStack matrices,
                         VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (entity instanceof TameableEntity || entity instanceof AbstractHorseEntity || entity instanceof FoxEntity) {
+        if (entity instanceof TameableEntity || entity instanceof AbstractHorseEntity || entity instanceof FoxEntity || entity instanceof AllayEntity) {
             // Do not render if the mod is disabled
             if (!WPIT.getInstance()
                     .getConfig().enabled) return;
