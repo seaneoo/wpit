@@ -1,10 +1,16 @@
 <div align="center">
   <img src="https://i.imgur.com/h20V6ci.png"/>
-
-![](https://img.shields.io/badge/minecraft-1.18.2-white?style=flat-square&color=red)
-![](https://img.shields.io/badge/minecraft-1.19-white?style=flat-square&color=red)
-[![](https://img.shields.io/badge/dynamic/json?style=flat-square&color=5da545&label=modrinth%20downloads&query=downloads&url=https%3A%2F%2Fapi.modrinth.com%2Fapi%2Fv1%2Fmod%2FUK8n9eQD)](https://modrinth.com/mod/wpit)
-![](https://img.shields.io/github/downloads/seaneoo/wpit/total?style=flat-square&label=github%20downloads&color=58A6FF)
+  
+![](https://img.shields.io/badge/minecraft-1.18.2-white?style=flat&color=red)
+![](https://img.shields.io/badge/minecraft-1.19-white?style=flat&color=red)
+  <br>
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/seaneoo/wpit)
+![Modrinth](https://img.shields.io/modrinth/dt/UK8n9eQD?label=modrinth%20downloads)
+![GitHub all releases](https://img.shields.io/github/downloads/seaneoo/wpit/total?label=github%20downloads)
+  <br>
+![GitHub issues](https://img.shields.io/github/issues-raw/seaneoo/wpit)
+![GitHub pull requests](https://img.shields.io/github/issues-pr-raw/seaneoo/wpit)
+![GitHub Repo stars](https://img.shields.io/github/stars/seaneoo/wpit)
 
   <hr>
 </div>
