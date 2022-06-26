@@ -19,8 +19,8 @@ public class WPITConfig implements ConfigData {
     // Turn the features of the mod on or off
     public boolean enabled = true;
 
-    // Whether the nameplate should always show up
-    public boolean alwaysDisplay = false;
+    // Whether the nameplate should be shown always, when you're nearby, or if you hover over the entity
+    public NameplateDisplay alwaysDisplay = NameplateDisplay.ON_HOVER;
 
     // The size of the nameplate (relative to the default size)
     @ConfigEntry.BoundedDiscrete(min = 0, max = 100)

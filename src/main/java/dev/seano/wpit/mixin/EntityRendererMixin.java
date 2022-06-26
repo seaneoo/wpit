@@ -12,6 +12,7 @@ import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import dev.seano.wpit.UserCacheManager;
 import dev.seano.wpit.WPIT;
+import dev.seano.wpit.config.NameplateDisplay;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.font.TextRenderer;
@@ -83,11 +84,14 @@ public class EntityRendererMixin<T extends Entity> {
             // Do not render if the mod is disabled
             if (!WPIT.getInstance()
                     .getConfig().enabled) return;
+
             // Do not render nameplate if hud is hidden
             if (WPIT.minecraft.options.hudHidden) return;
+
             // Do not render if the targetedEntity is not the entity
-            if (dispatcher.targetedEntity != entity && !WPIT.getInstance()
-                    .getConfig().alwaysDisplay) return;
+            if (dispatcher.targetedEntity != entity && WPIT.getInstance()
+                    .getConfig().alwaysDisplay == NameplateDisplay.ON_HOVER) return;
+
             // Do not render if the player is a passenger on the entity
             if (entity.hasPassenger(WPIT.minecraft.player)) return;
 
@@ -106,8 +110,10 @@ public class EntityRendererMixin<T extends Entity> {
                         .getName());
 
                 double dis = dispatcher.getSquaredDistanceToCamera(entity);
-                // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
-                if (dis <= 4096D) {
+                // If "alwaysDisplay" is set to NEARBY, render nameplate if dispatcher is 8 (or less) blocks away,
+                // otherwise 64 (or less) blocks
+                if (dis <= (WPIT.getInstance()
+                        .getConfig().alwaysDisplay == NameplateDisplay.ALWAYS ? 4096D : 64D)) {
                     float translateY = entity.hasCustomName() ? 0.75F : 0.5F;
                     float scale = 0.025F * (WPIT.getInstance()
                             .getConfig().scale / 100F);
