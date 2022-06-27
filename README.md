@@ -18,7 +18,7 @@ WPIT (Whose Pet Is That?) is a 1.18.2 and 1.19 Fabric mod that allows you to eas
 hover your crosshair over a tamed pet and the owner's name will display above it. This mod is 100% client-side, putting it on the
 server will do nothing.
 
-¹Wolves, cats, parrots, foxes, horses, donkeys, mules, llamas, and allays.
+¹Wolves, cats, parrots, foxes, horses, donkeys, mules, and llamas.
 
 ## Downloads
 
@@ -32,13 +32,16 @@ You may also add [Mod Menu](https://modrinth.com/mod/modmenu) if you would like 
 
 ## Options
 
-- **Enable mod?** If set to _yes_, the mod will function as intended. If _no_, it will not do anything.
-- **Always display nameplate?** If set to _yes_, the name of the owner will be shown regardless of if you're looking at
-  the entity.
-- **Nameplate scale %** The scale of the owner's nameplate relative to the default size (50 is 50% of the default size).
-- **Text color** Changes the color of the owner's nameplate. If you edit this in-game, it will autocomplete valid
+- **Enable WPIT** If set to _yes_, the mod will function as intended. If _no_, it will not do anything.
+- **Display Nameplate** The mode in which the owner nameplates will appear.
+  - Hover: If you target the pet with your crosshair, the nameplate will show (similar to custom names).
+  - Always: As long as you are within 64 blocks of the pet, the nameplate will show.
+  - Nearby: If you are within X number of blocks of the pet, the nameplate will show (configurable amount, up to 64).
+- **Nearby Distance** The number of blocks for the Nearby display mode to work (min 1, max 64).
+- **Show Other Owners** If set to _yes_, more than the primary owner of the pet will show. Only used for foxes.
+- **Nameplate Format** Change the format of the nameplate. Use _%s_ as a placeholder for the owner's name.
+- **Nameplate Text Color** Changes the color of the owner's nameplate. If you edit this in-game, it will autocomplete valid
   inputs.
-- **Show secondary owners?** If set to _yes_, only one owner of a pet will be displayed. Mainly used for foxes.
 
 ## Modpacks
 
@@ -47,22 +50,17 @@ anything with it, frankly). If you do put it in a modpack, I'd love to check it 
 
 ## Screenshots
 
-![](https://i.imgur.com/c3zBrm8.png)
+![](https://i.imgur.com/C9yePky.png)
 <br>
 *A wolf named "Buddy" who is tamed by player "seano".*
 <br><br>
 
-![](https://i.imgur.com/S7IBZfR.png)
+![](https://i.imgur.com/BRvYVlM.png)
 <br>
-*A parrot tamed by player "seano" with the "Text color" option set to _GOLD_.*
+*A fox with a custom name and two trusted players, "seano" and "MoozleVidaLeia".*
 <br><br>
 
-![](https://i.imgur.com/fbuYB2s.png)
+![](https://i.imgur.com/IWbnFvA.png)
 <br>
-*A fox named "Mr. Fox" who trust players "MoozleVidaLeia" and "seano".*
-<br><br>
-
-![](https://i.imgur.com/DiudDsv.png)
-<br>
-*An allay whose liked player is "seano".*
+*Four pets with owners/trusted players and the "Nameplate Text Color" option set to LIGHT_PURPLE.*
 <br><br>
