@@ -1,0 +1,9 @@
+{
+  "text.autoconfig.wpit.title": "WPIT选项",
+  "text.autoconfig.wpit.option.modEnabled": "是否启用？",
+  "text.autoconfig.wpit.option.displayMode": "是否总是显示铭牌？",
+  "text.autoconfig.wpit.option.textColor": "文本颜色",
+  "text.autoconfig.wpit.option.showOtherOwners": "是否显示次要主人？",
+  "text.autoconfig.wpit.option.nearbyDistance": "Nearby Distance",
+  "text.autoconfig.wpit.option.nameplateFormat": "Nameplate Format"
+}

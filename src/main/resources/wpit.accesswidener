@@ -1,0 +1,3 @@
+accessWidener	v1	named
+accessible    field    net/minecraft/entity/passive/FoxEntity    OWNER    Lnet/minecraft/entity/data/TrackedData;
+accessible    field    net/minecraft/entity/passive/FoxEntity    OTHER_TRUSTED    Lnet/minecraft/entity/data/TrackedData;

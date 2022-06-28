@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "wpit",
+  "version": "${version}",
+  "name": "WPIT",
+  "description": "Whose Pet Is That?",
+  "authors": [
+    "Sean O'Connor"
+  ],
+  "contributors": [
+    "IceAlin"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/wpit",
+    "sources": "https://github.com/seaneoo/wpit",
+    "issues": "https://github.com/seaneoo/wpit/issues"
+  },
+  "license": "Unlicense",
+  "icon": "assets/wpit/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.seano.wpit.WPIT"
+    ],
+    "modmenu": [
+      "dev.seano.wpit.config.WPITModMenu"
+    ]
+  },
+  "mixins": [
+    "wpit.mixins.json"
+  ],
+  "accessWidener": "wpit.accesswidener",
+  "depends": {
+    "minecraft": "1.19",
+    "fabricloader": ">=0.14.7",
+    "fabric": ">=0.55.1+1.19",
+    "cloth-config": ">=7.0.65"
+  },
+  "recommends": {
+    "modmenu": ">=4.0.0"
+  }
+}
