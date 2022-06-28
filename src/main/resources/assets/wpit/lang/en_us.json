@@ -1,9 +1,0 @@
-{
-  "text.autoconfig.wpit.title": "WPIT Options",
-  "text.autoconfig.wpit.option.modEnabled": "Enable WPIT",
-  "text.autoconfig.wpit.option.displayMode": "Display Nameplate",
-  "text.autoconfig.wpit.option.nearbyDistance": "Nearby Distance",
-  "text.autoconfig.wpit.option.showOtherOwners": "Show Other Owners",
-  "text.autoconfig.wpit.option.nameplateFormat": "Nameplate Format",
-  "text.autoconfig.wpit.option.textColor": "Nameplate Text Color"
-}
