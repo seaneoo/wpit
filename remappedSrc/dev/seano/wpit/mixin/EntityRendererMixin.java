@@ -12,19 +12,22 @@ import com.google.common.collect.Lists;
 import com.mojang.authlib.GameProfile;
 import dev.seano.wpit.UserCacheManager;
 import dev.seano.wpit.WPIT;
+import dev.seano.wpit.config.NameplateDisplay;
+import dev.seano.wpit.config.WPITConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.Tameable;
 import net.minecraft.entity.passive.AbstractHorseEntity;
 import net.minecraft.entity.passive.FoxEntity;
-import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
-import net.minecraft.util.math.Matrix4f;
+import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -34,11 +37,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin<T extends Entity> {
 
-    // Custom implementation of FoxEntity:getTrustedUuids since I couldn't get it to work :-(
+    @Shadow
+    @Final
+    protected EntityRenderDispatcher dispatcher;
+
+    @Shadow
+    @Final
+    private TextRenderer textRenderer;
+
     private List<UUID> getFoxTrustedUuids(FoxEntity entity) {
         ArrayList<UUID> list = Lists.newArrayList();
         list.add(entity.getDataTracker()
@@ -51,83 +62,97 @@ public class EntityRendererMixin<T extends Entity> {
     }
 
     private List<UUID> getEntityOwners(T entity) {
-        if (entity instanceof TameableEntity e) { // Wolf, Cat, Parrot
-            if (e.isTamed()) return Collections.singletonList(e.getOwnerUuid());
+        if (entity instanceof Tameable e) { // Wolf, Cat, Parrot
+            if (e.getOwnerUuid() != null) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof AbstractHorseEntity e) { // Horse, Donkey, Mule, Llama
             if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof FoxEntity e) { // Fox
             return getFoxTrustedUuids(e);
+//        } else if (entity instanceof AllayEntity e) {
+//            Optional<UUID> optional = e.getBrain()
+//                    .getOptionalMemory(MemoryModuleType.LIKED_PLAYER);
+//            if (optional.isPresent()) return Collections.singletonList(optional.get());
         }
         return Collections.emptyList();
     }
 
-    @Shadow
-    @Final
-    protected EntityRenderDispatcher dispatcher;
+    private void drawNameplate(T entity, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light) {
+        MinecraftClient minecraft = WPIT.minecraft;
+        WPITConfig config = WPIT.getInstance()
+                .getConfig();
 
-    @Shadow
-    @Final
-    private TextRenderer textRenderer;
+        if (entity instanceof Tameable || entity instanceof AbstractHorseEntity || entity instanceof FoxEntity) {
+            // mod is not enabled, do not render
+            if (!config.modEnabled) return;
 
-    // Render a nameplate for the name of the entity's owner
+            // game hud is hidden, do not render
+            if (minecraft.options.hudHidden) return;
+
+            // if the entity is not targeted, do not render
+            if (dispatcher.targetedEntity != entity && config.displayMode == NameplateDisplay.ON_HOVER) return;
+
+            // player is a passenger on the entity, do not render
+            if (entity.hasPassenger(minecraft.player)) return;
+
+            List<UUID> uuids = getEntityOwners(entity);
+            if (uuids.isEmpty()) return; // no players to render
+
+            for (int i = 0; i < uuids.size(); i++) {
+                // skip if non existent
+                if (uuids.get(i) == null) return;
+
+                Optional<GameProfile> gameProfile = UserCacheManager.getProfile(uuids.get(i));
+                // skip if profile is not found
+                if (gameProfile.isEmpty()) return;
+
+                String nameStr = gameProfile.get()
+                        .getName();
+                Text nameplateText = Text.of(config.nameplateFormat.formatted(nameStr));
+
+                double dis = dispatcher.getSquaredDistanceToCamera(entity);
+
+                // if mode is NEARBY, use num of blocks from config, otherwise default to 64 blocks
+                @SuppressWarnings("SwitchStatementWithTooFewBranches") int numBlocks = switch (config.displayMode) {
+                    case NEARBY -> config.nearbyDistance;
+                    default -> 64;
+                };
+
+                // do not render if more than numBlocks blocks away
+                if (dis <= numBlocks * numBlocks) {
+                    float translateY = entity.hasCustomName() ? .75f : .5f;
+                    float scale = .025f;
+                    float posY = -10 * i;
+
+                    matrixStack.push();
+                    matrixStack.translate(0, entity.getHeight() + translateY, 0);
+                    matrixStack.multiply(dispatcher.getRotation());
+                    matrixStack.scale(-scale, -scale, scale);
+
+                    Matrix4f positionMatrix = matrixStack.peek()
+                            .getPositionMatrix();
+
+                    float bgOpacity = minecraft.options.getTextBackgroundOpacity(.25f);
+                    int j = (int) (bgOpacity * 255f) << 24;
+                    float x = -textRenderer.getWidth(nameplateText) / 2f;
+
+                    textRenderer.draw(nameplateText, x, posY, 0x000000, false, positionMatrix, vertexConsumers, true,
+                            j, light);
+                    textRenderer.draw(nameplateText, x, posY, WPIT.getInstance()
+                            .getConfig().textColor.getHexadecimal(), false, positionMatrix, vertexConsumers, false, 0
+                            , light);
+
+
+                    matrixStack.pop();
+                }
+
+                if (!config.showOtherOwners && i == 0) return;
+            }
+        }
+    }
+
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
     private void render(T entity, float yaw, float tickDelta, MatrixStack matrices,
                         VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (entity instanceof TameableEntity || entity instanceof AbstractHorseEntity || entity instanceof FoxEntity) {
-            // Do not render if the mod is disabled
-            if (!WPIT.getInstance()
-                    .getConfig().enabled) return;
-            // Do not render nameplate if hud is hidden
-            if (WPIT.minecraft.options.hudHidden) return;
-            // Do not render if the targetedEntity is not the entity
-            if (dispatcher.targetedEntity != entity && !WPIT.getInstance()
-                    .getConfig().alwaysDisplay) return;
-            // Do not render if the player is a passenger on the entity
-            if (entity.hasPassenger(WPIT.minecraft.player)) return;
-
-            List<UUID> uuids = getEntityOwners(entity);
-            // Do not render if no owners are found
-            if (uuids.isEmpty()) return;
-
-            for (int i = 0; i < uuids.size(); i++) {
-                // Return if the element in the array is null
-                if (uuids.get(i) == null) return;
-                Optional<GameProfile> owner = UserCacheManager.getProfile(uuids.get(i));
-                // Do not render if profile is not found
-                if (owner.isEmpty()) return;
-
-                Text text = Text.translatable("wpit.text.nameplate", owner.get()
-                        .getName());
-
-                double dis = dispatcher.getSquaredDistanceToCamera(entity);
-                // Only render if player (dispatcher) is less than, or equal to, 64 blocks away
-                if (dis <= 4096D) {
-                    float translateY = entity.hasCustomName() ? 0.75F : 0.5F;
-                    float scale = 0.025F * (WPIT.getInstance()
-                            .getConfig().scale / 100F);
-                    float posY = -10 * i;
-
-                    matrices.push();
-                    matrices.translate(0, entity.getHeight() + translateY, 0);
-                    matrices.multiply(dispatcher.getRotation());
-                    matrices.scale(-scale, -scale, scale);
-
-                    Matrix4f matrix4f = matrices.peek()
-                            .getPositionMatrix();
-                    float bgOpacity = WPIT.minecraft.options.getTextBackgroundOpacity(0.25F);
-                    int j = (int) (bgOpacity * 255.0f) << 24;
-                    float h = -textRenderer.getWidth(text) / 2F;
-                    textRenderer.draw(text, h, posY, 0x20FFFFFF, false, matrix4f, vertexConsumers, true, j, light);
-                    textRenderer.draw(text, h, posY, WPIT.getInstance()
-                            .getConfig().color.getHexadecimal(), false, matrix4f, vertexConsumers, false, 0, light);
-
-                    matrices.pop();
-                }
-
-                // Do not render more the one nameplate
-                if (!WPIT.getInstance()
-                        .getConfig().showSecondaryOwners && i == 0) return;
-            }
-        }
+        this.drawNameplate(entity, matrices, vertexConsumers, light);
     }
 }
