@@ -68,16 +68,13 @@ public class EntityRendererMixin<T extends Entity> {
             if (e.isTame()) return Collections.singletonList(e.getOwnerUuid());
         } else if (entity instanceof FoxEntity e) { // Fox
             return getFoxTrustedUuids(e);
-//        } else if (entity instanceof AllayEntity e) {
-//            Optional<UUID> optional = e.getBrain()
-//                    .getOptionalMemory(MemoryModuleType.LIKED_PLAYER);
-//            if (optional.isPresent()) return Collections.singletonList(optional.get());
         }
         return Collections.emptyList();
     }
 
     private void drawNameplate(T entity, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light) {
-        MinecraftClient minecraft = WPIT.minecraft;
+        MinecraftClient minecraft = WPIT.getInstance()
+                .getMinecraftClient();
         WPITConfig config = WPIT.getInstance()
                 .getConfig();
 
@@ -135,11 +132,9 @@ public class EntityRendererMixin<T extends Entity> {
                     int j = (int) (bgOpacity * 255f) << 24;
                     float x = -textRenderer.getWidth(nameplateText) / 2f;
 
-                    textRenderer.draw(nameplateText, x, posY, 0x000000, false, positionMatrix, vertexConsumers, true,
-                            j, light);
+                    textRenderer.draw(nameplateText, x, posY, 0x000000, false, positionMatrix, vertexConsumers, true, j, light);
                     textRenderer.draw(nameplateText, x, posY, WPIT.getInstance()
-                            .getConfig().textColor.getHexadecimal(), false, positionMatrix, vertexConsumers, false, 0
-                            , light);
+                            .getConfig().textColor.getHexadecimal(), false, positionMatrix, vertexConsumers, false, 0, light);
 
 
                     matrixStack.pop();
@@ -151,8 +146,7 @@ public class EntityRendererMixin<T extends Entity> {
     }
 
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
-    private void render(T entity, float yaw, float tickDelta, MatrixStack matrices,
-                        VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+    private void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         this.drawNameplate(entity, matrices, vertexConsumers, light);
     }
 }

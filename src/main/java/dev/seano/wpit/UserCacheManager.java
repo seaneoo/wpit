@@ -32,7 +32,9 @@ public class UserCacheManager {
                     public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
                         CompletableFuture.runAsync(() -> {
                             GameProfile gameProfile = new GameProfile(uuid, null);
-                            gameProfile = WPIT.minecraft.getSessionService()
+                            gameProfile = WPIT.getInstance()
+                                    .getMinecraftClient()
+                                    .getSessionService()
                                     .fillProfileProperties(gameProfile, false);
                             userCache.put(uuid, Optional.ofNullable(gameProfile));
                         });

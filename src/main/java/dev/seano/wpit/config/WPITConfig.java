@@ -13,7 +13,7 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
-@Config(name = WPIT.ID)
+@Config(name = WPIT.MOD_ID)
 public class WPITConfig implements ConfigData {
 
     public boolean modEnabled = true;
