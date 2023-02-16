@@ -8,6 +8,7 @@
 
 package dev.seano.wpit.config;
 
+@SuppressWarnings("unused")
 public enum Color {
 
     BLACK(0x000000),

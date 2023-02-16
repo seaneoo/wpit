@@ -8,6 +8,7 @@
 
 package dev.seano.wpit.config;
 
+@SuppressWarnings("unused")
 public enum NameplateDisplay {
 
     ALWAYS,
