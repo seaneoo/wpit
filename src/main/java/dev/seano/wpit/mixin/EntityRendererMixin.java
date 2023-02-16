@@ -94,7 +94,7 @@ public class EntityRendererMixin<T extends Entity> {
             List<UUID> uuids = getEntityOwners(entity);
             if (uuids.isEmpty()) return; // no players to render
 
-            for (int i = 0; i < uuids.size(); i++) {
+            for (int i = uuids.size() - 1; i >= 0; i--) {
                 // skip if non existent
                 if (uuids.get(i) == null) return;
 
