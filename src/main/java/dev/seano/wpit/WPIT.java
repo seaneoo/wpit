@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 public class WPIT implements ClientModInitializer {
     public static final String MOD_ID = "wpit";
     public static final String MOD_NAME = "WPIT";
+    @SuppressWarnings("unused")
     public static final Logger LOGGER = LogManager.getLogger(MOD_NAME);
 
     private static WPIT INSTANCE;
