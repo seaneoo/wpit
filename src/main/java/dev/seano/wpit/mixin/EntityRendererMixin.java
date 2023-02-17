@@ -104,56 +104,69 @@ public class EntityRendererMixin<T extends Entity> {
         WPITConfig config = WPIT.getInstance()
                 .getConfig();
 
+        // If the entity is an instance of Tameable, AbstractHorseEntity, FoxEntity (i.e., something that can have owners)
         if (entity instanceof Tameable || entity instanceof AbstractHorseEntity || entity instanceof FoxEntity) {
-            // mod is not enabled, do not render
+            // If the mod is not enabled, do not render
             if (!config.modEnabled) return;
 
-            // game hud is hidden, do not render
+            // If the game hud is hidden, do not render
             if (minecraft.options.hudHidden) return;
 
-            // if the entity is not targeted, do not render
+            // If the displayMode is set to NameplateDisplay ON_HOVER and the dispatcher is not targeting the entity, do not render
             if (dispatcher.targetedEntity != entity && config.displayMode == NameplateDisplay.ON_HOVER) return;
 
-            // player is a passenger on the entity, do not render
+            // If the client player is a passenger on the entity, do not render
             if (entity.hasPassenger(minecraft.player)) return;
 
+            // Get the UUIDS for the entity
             List<UUID> uuids = getEntityOwners(entity);
-            if (uuids.isEmpty()) return; // no players to render
+            // If there are no UUIDs, do not render
+            if (uuids.isEmpty()) return;
 
+            // Loop through all the UUIDs for the entity
             for (int i = uuids.size() - 1; i >= 0; i--) {
-                // skip if non existent
+                // If the UUID is null, skip
                 if (uuids.get(i) == null) return;
 
+                // Get the GameProfile from the UUID
                 Optional<GameProfile> gameProfile = UserCacheManager.getProfile(uuids.get(i));
-                // skip if profile is not found
+                // If the profile is not found, skip
                 if (gameProfile.isEmpty()) return;
 
+                // Get the player's name from the profile
                 String nameStr = gameProfile.get()
                         .getName();
+                // Create the text to be displayed on the nameplate, using the format specified from nameplateFormat
                 Text nameplateText = Text.of(config.nameplateFormat.formatted(nameStr));
 
+                // Get the squared distance from the dispatcher to the entity
                 double dis = dispatcher.getSquaredDistanceToCamera(entity);
 
-                // if mode is NEARBY, use num of blocks from config, otherwise default to 64 blocks
-                @SuppressWarnings("SwitchStatementWithTooFewBranches") int numBlocks = switch (config.displayMode) {
-                    case NEARBY -> config.nearbyDistance;
-                    default -> 64;
-                };
+                // If the displayMode is set to NameplateDisplay NEARBY, use the configured nearbyDistance amount, otherwise use 64
+                int numBlocks = config.displayMode == NameplateDisplay.NEARBY ? config.nearbyDistance : 64;
 
-                // do not render if more than numBlocks blocks away
+                // If the dispatcher's distance to the entity is <= to the numBlocks amount, render the nameplate
                 if (dis <= numBlocks * numBlocks) {
+                    // How far up the entity the nameplate should be, taking into account if the entity has a custom name
                     float translateY = entity.hasCustomName() ? .75f : .5f;
+                    // The scale of the nameplate
                     float scale = .025f;
+                    // The Y position of the nameplate, changes depending on how many player names need to be displayed
                     float posY = -10 * i;
 
+                    // Push the matrix stack (allow changes)
                     matrixStack.push();
+
+                    // Modify (translate, add rotations, and scale) the matrix stack
                     matrixStack.translate(0, entity.getHeight() + translateY, 0);
                     matrixStack.multiply(dispatcher.getRotation());
                     matrixStack.scale(-scale, -scale, scale);
 
+                    // Get the position matrix from the matrix stack
                     Matrix4f positionMatrix = matrixStack.peek()
                             .getPositionMatrix();
 
+                    // Draw the nameplate(s)
                     float bgOpacity = minecraft.options.getTextBackgroundOpacity(.25f);
                     int j = (int) (bgOpacity * 255f) << 24;
                     float x = -textRenderer.getWidth(nameplateText) / 2f;
@@ -162,10 +175,11 @@ public class EntityRendererMixin<T extends Entity> {
                     textRenderer.draw(nameplateText, x, posY, WPIT.getInstance()
                             .getConfig().textColor.getHexadecimal(), false, positionMatrix, vertexConsumers, false, 0, light);
 
-
+                    // Pop the matrix stack (prevent further changes)
                     matrixStack.pop();
                 }
 
+                // If showOtherOwners is set to false and the loop is on its first iteration, break from the loop
                 if (!config.showOtherOwners && i == 0) return;
             }
         }
