@@ -53,6 +53,12 @@ public class EntityRendererMixin<T extends Entity> {
     @Final
     private TextRenderer textRenderer;
 
+    /**
+     * Returns a list of UUIDs for players who are "trusted" by the specified Fox entity.
+     *
+     * @param entity Instance of the Fox entity
+     * @return List of UUIDs
+     */
     private List<UUID> getFoxTrustedUuids(FoxEntity entity) {
         ArrayList<UUID> list = Lists.newArrayList();
         list.add(entity.getDataTracker()
@@ -64,6 +70,12 @@ public class EntityRendererMixin<T extends Entity> {
         return list;
     }
 
+    /**
+     * Returns a list of UUIDs for players who "own" the specified entity.
+     *
+     * @param entity Instance of the entity
+     * @return List of UUIDs
+     */
     private List<UUID> getEntityOwners(T entity) {
         if (entity instanceof Tameable e) { // Wolf, Cat, Parrot
             if (e.getOwnerUuid() != null) return Collections.singletonList(e.getOwnerUuid());
@@ -75,6 +87,17 @@ public class EntityRendererMixin<T extends Entity> {
         return Collections.emptyList();
     }
 
+    /**
+     * Custom implementation of {@link EntityRenderer#renderLabelIfPresent(Entity, Text, MatrixStack, VertexConsumerProvider, int)} that determines when, and
+     * how, a nameplate should be displayed above the entity.
+     *
+     * @param entity          Instance of the entity from {@link EntityRenderer#render(Entity, float, float, MatrixStack, VertexConsumerProvider, int)}
+     * @param matrixStack     Instance of the MatrixStack from {@link EntityRenderer#render(Entity, float, float, MatrixStack, VertexConsumerProvider, int)}
+     * @param vertexConsumers Instance of the VertexConsumerProvider from
+     *                        {@link EntityRenderer#render(Entity, float, float, MatrixStack, VertexConsumerProvider, int)}
+     * @param light           Light value from {@link EntityRenderer#render(Entity, float, float, MatrixStack, VertexConsumerProvider, int)}
+     */
+    @SuppressWarnings("JavadocReference")
     private void drawNameplate(T entity, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light) {
         MinecraftClient minecraft = WPIT.getInstance()
                 .getMinecraftClient();
@@ -148,6 +171,19 @@ public class EntityRendererMixin<T extends Entity> {
         }
     }
 
+    /**
+     * Injects into the {@link EntityRenderer#render(Entity, float, float, MatrixStack, VertexConsumerProvider, int)} function to call
+     * our {@link #drawNameplate(Entity, MatrixStack, VertexConsumerProvider, int)} function.
+     *
+     * @param entity
+     * @param yaw
+     * @param tickDelta
+     * @param matrices
+     * @param vertexConsumers
+     * @param light
+     * @param ci
+     */
+    @SuppressWarnings("JavadocDeclaration")
     @Inject(method = {"render"}, at = {@At(value = "HEAD")})
     private void render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         this.drawNameplate(entity, matrices, vertexConsumers, light);
