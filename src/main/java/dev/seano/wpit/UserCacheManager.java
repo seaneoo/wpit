@@ -28,22 +28,26 @@ public class UserCacheManager {
     private static final LoadingCache<UUID, Optional<GameProfile>> userCache;
 
     static {
+        CacheLoader<UUID, Optional<GameProfile>> cacheLoader = new CacheLoader<>() {
+            @Override
+            public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
+                Runnable runnable = () -> {
+                    GameProfile gameProfile = new GameProfile(uuid, null);
+                    gameProfile = WPIT.getInstance()
+                            .getMinecraftClient()
+                            .getSessionService()
+                            .fillProfileProperties(gameProfile, false);
+                    userCache.put(uuid, Optional.ofNullable(gameProfile));
+                };
+
+                CompletableFuture.runAsync(runnable);
+                return Optional.empty();
+            }
+        };
+
         userCache = CacheBuilder.newBuilder()
                 .expireAfterWrite(6, TimeUnit.HOURS)
-                .build(new CacheLoader<>() {
-                    @Override
-                    public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
-                        CompletableFuture.runAsync(() -> {
-                            GameProfile gameProfile = new GameProfile(uuid, null);
-                            gameProfile = WPIT.getInstance()
-                                    .getMinecraftClient()
-                                    .getSessionService()
-                                    .fillProfileProperties(gameProfile, false);
-                            userCache.put(uuid, Optional.ofNullable(gameProfile));
-                        });
-                        return Optional.empty();
-                    }
-                });
+                .build(cacheLoader);
     }
 
     public static LoadingCache<UUID, Optional<GameProfile>> getUserCache() {
