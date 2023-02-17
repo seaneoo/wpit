@@ -37,6 +37,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.*;
 
+/**
+ * @author Sean O'Connor
+ */
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 @Mixin(EntityRenderer.class)

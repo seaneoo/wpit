@@ -13,6 +13,9 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
+/**
+ * @author Sean O'Connor
+ */
 @Config(name = WPIT.MOD_ID)
 public class WPITConfig implements ConfigData {
 

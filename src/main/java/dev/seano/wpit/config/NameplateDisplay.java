@@ -8,6 +8,9 @@
 
 package dev.seano.wpit.config;
 
+/**
+ * @author Sean O'Connor
+ */
 @SuppressWarnings("unused")
 public enum NameplateDisplay {
 

@@ -18,6 +18,9 @@ import net.minecraft.client.MinecraftClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * @author Sean O'Connor
+ */
 @Environment(EnvType.CLIENT)
 public class WPIT implements ClientModInitializer {
     public static final String MOD_ID = "wpit";

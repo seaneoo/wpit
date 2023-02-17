@@ -20,6 +20,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author Sean O'Connor
+ */
 public class UserCacheManager {
 
     private static final LoadingCache<UUID, Optional<GameProfile>> userCache;

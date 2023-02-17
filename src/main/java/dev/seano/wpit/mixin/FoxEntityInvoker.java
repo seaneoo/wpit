@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * @author Sean O'Connor
+ */
 @Mixin(FoxEntity.class)
 public interface FoxEntityInvoker {
 
