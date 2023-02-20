@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "id": "wpit",
   "version": "${version}",
-  "name": "WPIT",
-  "description": "Whose Pet Is That?",
+  "name": "WPIT (Whose Pet Is That?)",
+  "description": "Uncover the mysterious pets around your Minecraft world.",
   "authors": [
     "Sean O'Connor"
   ],
@@ -11,7 +11,6 @@
     "IceAlin"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/wpit",
     "sources": "https://github.com/seaneoo/wpit",
     "issues": "https://github.com/seaneoo/wpit/issues"
   },
