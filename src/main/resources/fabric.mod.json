@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "id": "wpit",
+  "version": "${version}",
+  "name": "WPIT",
+  "description": "Whose pet is that?",
+  "contact": {
+    "homepage": "https://modrinth.com/mod/wpit",
+    "sources": "https://github.com/seaneoo/wpit/",
+    "issues": "https://github.com/seaneoo/wpit/issues"
+  },
+  "authors": [
+    {
+      "name": "seano",
+      "contact": {
+        "homepage": "https://seano.dev/"
+      }
+    }
+  ],
+  "license": "Unlicense",
+  "icon": "assets/wpit/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "dev.seano.wpit.WPITMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.22",
+    "minecraft": "~1.20",
+    "java": ">=17",
+    "fabric-api": ">=0.83.0+1.20"
+  }
+}
