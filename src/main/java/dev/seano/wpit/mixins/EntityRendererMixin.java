@@ -1,6 +1,7 @@
 package dev.seano.wpit.mixins;
 
 import dev.seano.wpit.WPITMod;
+import dev.seano.wpit.utils.UserCache;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -48,8 +49,7 @@ public abstract class EntityRendererMixin<T extends Entity> {
             List<Text> texts = new ArrayList<>();
             List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity);
             if (!owners.isEmpty()) {
-                // TODO: Display the player names (and maybe their skin?)
-                owners.stream().filter(Objects::nonNull).forEach(uuid -> texts.add(Text.of(String.format("%s", uuid))));
+                owners.stream().filter(Objects::nonNull).map(UserCache::getProfile).filter(Optional::isPresent).forEach(gameProfile -> texts.add(Text.of(String.format("%s", gameProfile.get().getName()))));
             }
 
             for (int i = 0; i < texts.size(); i++) {

@@ -2,6 +2,7 @@ package dev.seano.wpit.mixins;
 
 import dev.seano.wpit.WPITMod;
 import dev.seano.wpit.hud.Tooltip;
+import dev.seano.wpit.utils.UserCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -47,8 +48,7 @@ public abstract class InGameHudMixin {
 
                 List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity.get());
                 if (!owners.isEmpty()) {
-                    // TODO: Display the player names (and maybe their skin?)
-                    owners.stream().filter(Objects::nonNull).forEach(uuid -> texts.add(Text.of(String.format("%s", uuid))));
+                    owners.stream().filter(Objects::nonNull).map(UserCache::getProfile).filter(Optional::isPresent).forEach(gameProfile -> texts.add(Text.of(String.format("%s", gameProfile.get().getName()))));
                 }
 
                 new Tooltip(client, texts.toArray(Text[]::new)).render(context);
