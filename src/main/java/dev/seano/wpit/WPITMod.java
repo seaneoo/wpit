@@ -3,6 +3,8 @@ package dev.seano.wpit;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.minecraft.client.MinecraftClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,9 +13,12 @@ public class WPITMod implements ClientModInitializer {
     //    public static final String MOD_ID = "wpit";
     public static final String MOD_NAME = "WPIT";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_NAME);
+    public static final MinecraftClient MINECRAFT_CLIENT = MinecraftClient.getInstance();
+
+    public static final RayTracing RAY_TRACING = new RayTracing();
 
     @Override
     public void onInitializeClient() {
-        LOGGER.info("Initialize client");
+        ClientTickEvents.END_CLIENT_TICK.register(RAY_TRACING::fire);
     }
 }
