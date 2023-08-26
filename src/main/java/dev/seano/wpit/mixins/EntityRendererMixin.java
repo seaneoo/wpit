@@ -7,7 +7,8 @@ import net.minecraft.client.render.entity.EntityRenderDispatcher;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
 import org.joml.Matrix4f;
 import org.spongepowered.asm.mixin.Final;
@@ -16,6 +17,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.*;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin<T extends Entity> {
@@ -28,26 +31,47 @@ public abstract class EntityRendererMixin<T extends Entity> {
 
     @Inject(method = "render", at = @At("HEAD"))
     public void wpit$render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
-        if (entity instanceof LivingEntity) {
+        if (entity instanceof TameableEntity || entity instanceof FoxEntity) {
+            /* If the dispatcher is > 64 blocks away from the entity, hide the nameplate. */
             double squaredDistanceToCamera = this.dispatcher.getSquaredDistanceToCamera(entity);
             if (squaredDistanceToCamera > 4096.0) return;
 
-            Text text = Text.translatable(entity.getType().getTranslationKey());
+            /* If the dispatcher is not targeting the entity, hide the nameplate. */
+            if (dispatcher.targetedEntity != entity) return;
 
-            matrices.push();
-            matrices.translate(0f, entity.getNameLabelHeight(), 0f);
-            matrices.multiply(this.dispatcher.getRotation());
-            matrices.scale(-0.025f, -0.025f, 0.025f);
+            /* If the player is riding the entity, hide the nameplate. */
+            if (entity.hasPassenger(WPITMod.MINECRAFT_CLIENT.player)) return;
 
-            Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-            float g = WPITMod.MINECRAFT_CLIENT.options.getTextBackgroundOpacity(0.25f);
-            int j = (int) (g * 255.0f) << 24;
-            TextRenderer textRenderer = this.getTextRenderer();
-            float h = (float) -textRenderer.getWidth(text) / 2;
-            this.getTextRenderer().draw(text, h, 0, 0x20FFFFFF, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, j, light);
-            this.getTextRenderer().draw(text, h, 0, -1, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, light);
+            /* If the HUD is hidden, hide the nameplate. */
+            if (WPITMod.MINECRAFT_CLIENT.options.hudHidden) return;
 
-            matrices.pop();
+            List<Text> texts = new ArrayList<>();
+            List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity);
+            if (!owners.isEmpty()) {
+                // TODO: Display the player names (and maybe their skin?)
+                owners.stream().filter(Objects::nonNull).forEach(uuid -> texts.add(Text.of(String.format("%s", uuid))));
+            }
+
+            for (int i = 0; i < texts.size(); i++) {
+                Text text = texts.get(i);
+
+                matrices.push();
+
+                matrices.translate(0f, entity.getNameLabelHeight(), 0f);
+                matrices.multiply(this.dispatcher.getRotation());
+                matrices.scale(-0.025f, -0.025f, 0.025f);
+
+                Matrix4f matrix4f = matrices.peek().getPositionMatrix();
+                float g = WPITMod.MINECRAFT_CLIENT.options.getTextBackgroundOpacity(0.25f);
+                int j = (int) (g * 255.0f) << 24;
+                TextRenderer textRenderer = this.getTextRenderer();
+                float x = (float) -textRenderer.getWidth(text) / 2;
+                float y = -10 * i;
+                this.getTextRenderer().draw(text, x, y, 0x20FFFFFF, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, j, light);
+                this.getTextRenderer().draw(text, x, y, -1, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, light);
+
+                matrices.pop();
+            }
         }
     }
 }
