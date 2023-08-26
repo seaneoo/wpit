@@ -28,6 +28,7 @@
   "mixins": [
     "wpit.mixins.json"
   ],
+  "accessWidener": "wpit.accesswidener",
   "depends": {
     "fabricloader": ">=0.14.22",
     "minecraft": "~1.20",
