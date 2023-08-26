@@ -6,7 +6,8 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.passive.FoxEntity;
+import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.text.Text;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.Optional;
+import java.util.*;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -38,12 +39,19 @@ public abstract class InGameHudMixin {
     public void wpit$render(DrawContext context, float tickDelta, CallbackInfo ci) {
         if (canDisplay()) {
             Optional<Entity> entity = WPITMod.RAY_TRACING.getTarget();
-            if (entity.isPresent() && entity.get() instanceof LivingEntity) {
+            if (entity.isPresent() && (entity.get() instanceof TameableEntity || entity.get() instanceof FoxEntity)) {
                 this.client.getProfiler().push("wpit tooltip");
 
-                Text text0 = Text.translatable(entity.get().getType().getTranslationKey());
-                Text text1 = Text.of("Lorem Ipsum");
-                new Tooltip(client, text0, text1).render(context);
+                List<Text> texts = new ArrayList<>();
+                texts.add(Text.translatable(entity.get().getType().getTranslationKey()));
+
+                List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity.get());
+                if (!owners.isEmpty()) {
+                    // TODO: Display the player names (and maybe their skin?)
+                    owners.stream().filter(Objects::nonNull).forEach(uuid -> texts.add(Text.of(String.format("%s", uuid))));
+                }
+
+                new Tooltip(client, texts.toArray(Text[]::new)).render(context);
 
                 this.client.getProfiler().pop();
             }
