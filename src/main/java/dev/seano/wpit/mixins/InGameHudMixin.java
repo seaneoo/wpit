@@ -51,7 +51,7 @@ public abstract class InGameHudMixin {
                 if (!owners.isEmpty()) {
                     owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
                             .filter(Optional::isPresent)
-                            .forEach(gameProfile -> texts.add(Text.of(String.format("%s",
+                            .forEach(gameProfile -> texts.add(Text.of(String.format("§7%s",
                                     gameProfile.get()
                                             .getName()))));
                 }
