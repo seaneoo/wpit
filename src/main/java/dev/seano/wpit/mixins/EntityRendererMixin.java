@@ -31,7 +31,8 @@ public abstract class EntityRendererMixin<T extends Entity> {
     public abstract TextRenderer getTextRenderer();
 
     @Inject(method = "render", at = @At("HEAD"))
-    public void wpit$render(T entity, float yaw, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
+    public void wpit$render(T entity, float yaw, float tickDelta, MatrixStack matrices,
+                            VertexConsumerProvider vertexConsumers, int light, CallbackInfo ci) {
         if (entity instanceof TameableEntity || entity instanceof FoxEntity) {
             /* If the dispatcher is > 64 blocks away from the entity, hide the nameplate. */
             double squaredDistanceToCamera = this.dispatcher.getSquaredDistanceToCamera(entity);
@@ -49,7 +50,11 @@ public abstract class EntityRendererMixin<T extends Entity> {
             List<Text> texts = new ArrayList<>();
             List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity);
             if (!owners.isEmpty()) {
-                owners.stream().filter(Objects::nonNull).map(UserCache::getProfile).filter(Optional::isPresent).forEach(gameProfile -> texts.add(Text.of(String.format("%s", gameProfile.get().getName()))));
+                owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
+                        .filter(Optional::isPresent)
+                        .forEach(gameProfile -> texts.add(Text.of(String.format("%s",
+                                gameProfile.get()
+                                .getName()))));
             }
 
             for (int i = 0; i < texts.size(); i++) {
@@ -67,8 +72,12 @@ public abstract class EntityRendererMixin<T extends Entity> {
                 TextRenderer textRenderer = this.getTextRenderer();
                 float x = (float) -textRenderer.getWidth(text) / 2;
                 float y = -10 * i;
-                this.getTextRenderer().draw(text, x, y, 0x20FFFFFF, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, j, light);
-                this.getTextRenderer().draw(text, x, y, -1, false, matrix4f, vertexConsumers, TextRenderer.TextLayerType.NORMAL, 0, light);
+                this.getTextRenderer()
+                        .draw(text, x, y, 0x20FFFFFF, false, matrix4f, vertexConsumers,
+                                TextRenderer.TextLayerType.NORMAL, j, light);
+                this.getTextRenderer()
+                        .draw(text, x, y, -1, false, matrix4f, vertexConsumers,
+                                TextRenderer.TextLayerType.NORMAL, 0, light);
 
                 matrices.pop();
             }

@@ -22,7 +22,8 @@ public class UserCache {
             public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
                 Runnable runnable = () -> {
                     GameProfile gameProfile = new GameProfile(uuid, null);
-                    gameProfile = WPITMod.MINECRAFT_CLIENT.getSessionService().fillProfileProperties(gameProfile, false);
+                    gameProfile = WPITMod.MINECRAFT_CLIENT.getSessionService()
+                            .fillProfileProperties(gameProfile, false);
                     userCache.put(uuid, Optional.ofNullable(gameProfile));
                 };
 
@@ -31,7 +32,8 @@ public class UserCache {
             }
         };
 
-        userCache = CacheBuilder.newBuilder().expireAfterWrite(6, TimeUnit.HOURS).build(cacheLoader);
+        userCache = CacheBuilder.newBuilder().expireAfterWrite(6, TimeUnit.HOURS)
+                .build(cacheLoader);
     }
 
     public static LoadingCache<UUID, Optional<GameProfile>> getUserCache() {

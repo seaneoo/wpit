@@ -27,7 +27,8 @@ public abstract class InGameHudMixin {
     private MinecraftClient client;
 
     /**
-     * If our HUD can be displayed. Based upon the game HUD being hidden or the debug menu being open.
+     * If our HUD can be displayed. Based upon the game HUD being hidden or the debug menu being
+     * open.
      *
      * @return True, if we should display the HUD.
      */
@@ -48,7 +49,11 @@ public abstract class InGameHudMixin {
 
                 List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity.get());
                 if (!owners.isEmpty()) {
-                    owners.stream().filter(Objects::nonNull).map(UserCache::getProfile).filter(Optional::isPresent).forEach(gameProfile -> texts.add(Text.of(String.format("%s", gameProfile.get().getName()))));
+                    owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
+                            .filter(Optional::isPresent)
+                            .forEach(gameProfile -> texts.add(Text.of(String.format("%s",
+                                    gameProfile.get()
+                                            .getName()))));
                 }
 
                 new Tooltip(client, texts.toArray(Text[]::new)).render(context);
