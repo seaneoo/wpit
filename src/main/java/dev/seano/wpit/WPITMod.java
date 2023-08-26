@@ -1,6 +1,7 @@
 package dev.seano.wpit;
 
 import dev.seano.wpit.utils.RayTracing;
+import dev.seano.wpit.utils.TameableHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,6 +18,7 @@ public class WPITMod implements ClientModInitializer {
     public static final MinecraftClient MINECRAFT_CLIENT = MinecraftClient.getInstance();
 
     public static final RayTracing RAY_TRACING = new RayTracing();
+    public static final TameableHelper TAMEABLE_HELPER = new TameableHelper();
 
     @Override
     public void onInitializeClient() {
