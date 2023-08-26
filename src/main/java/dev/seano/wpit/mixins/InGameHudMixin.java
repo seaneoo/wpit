@@ -1,5 +1,6 @@
 package dev.seano.wpit.mixins;
 
+import dev.seano.wpit.WPITConfig;
 import dev.seano.wpit.WPITMod;
 import dev.seano.wpit.hud.Tooltip;
 import dev.seano.wpit.utils.UserCache;
@@ -39,26 +40,29 @@ public abstract class InGameHudMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
     public void wpit$render(DrawContext context, float tickDelta, CallbackInfo ci) {
-        if (canDisplay()) {
-            Optional<Entity> entity = WPITMod.INSTANCE.rayTracing.getTarget();
-            if (entity.isPresent() && (entity.get() instanceof TameableEntity || entity.get() instanceof FoxEntity)) {
-                this.client.getProfiler().push("wpit tooltip");
+        if (WPITConfig.mode == WPITConfig.DisplayMode.TOOLTIP) {
+            if (canDisplay()) {
+                Optional<Entity> entity = WPITMod.INSTANCE.rayTracing.getTarget();
+                if (entity.isPresent() && (entity.get() instanceof TameableEntity || entity.get() instanceof FoxEntity)) {
+                    this.client.getProfiler().push("wpit tooltip");
 
-                List<Text> texts = new ArrayList<>();
-                texts.add(Text.translatable(entity.get().getType().getTranslationKey()));
+                    List<Text> texts = new ArrayList<>();
+                    texts.add(Text.translatable(entity.get().getType().getTranslationKey()));
 
-                List<UUID> owners = WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity.get());
-                if (!owners.isEmpty()) {
-                    owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
-                            .filter(Optional::isPresent)
-                            .forEach(gameProfile -> texts.add(Text.of(String.format("§7%s",
-                                    gameProfile.get()
-                                            .getName()))));
+                    List<UUID> owners =
+                            WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity.get());
+                    if (!owners.isEmpty()) {
+                        owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
+                                .filter(Optional::isPresent)
+                                .forEach(gameProfile -> texts.add(Text.of(String.format("§7%s",
+                                        gameProfile.get()
+                                                .getName()))));
+                    }
+
+                    new Tooltip(client, texts.toArray(Text[]::new)).render(context);
+
+                    this.client.getProfiler().pop();
                 }
-
-                new Tooltip(client, texts.toArray(Text[]::new)).render(context);
-
-                this.client.getProfiler().pop();
             }
         }
     }

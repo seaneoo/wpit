@@ -2,6 +2,7 @@ package dev.seano.wpit;
 
 import dev.seano.wpit.utils.RayTracing;
 import dev.seano.wpit.utils.TameableHelper;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -29,6 +30,8 @@ public class WPITMod implements ClientModInitializer {
     public void onInitializeClient() {
         if (INSTANCE == null) INSTANCE = this;
         MINECRAFT = MinecraftClient.getInstance();
+
+        MidnightConfig.init(MOD_ID, WPITConfig.class);
 
         this.rayTracing = new RayTracing();
         this.tameableHelper = new TameableHelper();

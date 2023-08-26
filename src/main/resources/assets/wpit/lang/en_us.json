@@ -1,0 +1,6 @@
+{
+  "wpit.midnightconfig.title": "Config",
+  "wpit.midnightconfig.mode": "Mode",
+  "wpit.midnightconfig.enum.DisplayMode.TOOLTIP": "Tooltip",
+  "wpit.midnightconfig.enum.DisplayMode.NAMEPLATE": "Nameplate"
+}

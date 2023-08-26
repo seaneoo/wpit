@@ -1,5 +1,6 @@
 package dev.seano.wpit.mixins;
 
+import dev.seano.wpit.WPITConfig;
 import dev.seano.wpit.WPITMod;
 import dev.seano.wpit.utils.UserCache;
 import net.minecraft.client.font.TextRenderer;
@@ -46,6 +47,9 @@ public abstract class EntityRendererMixin<T extends Entity> {
 
             /* If the HUD is hidden, hide the nameplate. */
             if (WPITMod.MINECRAFT.options.hudHidden) return;
+
+            /* If the mode is not set to NAMEPLATE. */
+            if (WPITConfig.mode != WPITConfig.DisplayMode.NAMEPLATE) return;
 
             List<Text> texts = new ArrayList<>();
             List<UUID> owners = WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity);
