@@ -25,6 +25,9 @@
       "dev.seano.wpit.WPITMod"
     ]
   },
+  "mixins": [
+    "wpit.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.14.22",
     "minecraft": "~1.20",
