@@ -22,7 +22,7 @@ public class UserCache {
             public @NotNull Optional<GameProfile> load(@NotNull UUID uuid) {
                 Runnable runnable = () -> {
                     GameProfile gameProfile = new GameProfile(uuid, null);
-                    gameProfile = WPITMod.MINECRAFT_CLIENT.getSessionService()
+                    gameProfile = WPITMod.MINECRAFT.getSessionService()
                             .fillProfileProperties(gameProfile, false);
                     userCache.put(uuid, Optional.ofNullable(gameProfile));
                 };

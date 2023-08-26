@@ -42,19 +42,19 @@ public abstract class EntityRendererMixin<T extends Entity> {
             if (dispatcher.targetedEntity != entity) return;
 
             /* If the player is riding the entity, hide the nameplate. */
-            if (entity.hasPassenger(WPITMod.MINECRAFT_CLIENT.player)) return;
+            if (entity.hasPassenger(WPITMod.MINECRAFT.player)) return;
 
             /* If the HUD is hidden, hide the nameplate. */
-            if (WPITMod.MINECRAFT_CLIENT.options.hudHidden) return;
+            if (WPITMod.MINECRAFT.options.hudHidden) return;
 
             List<Text> texts = new ArrayList<>();
-            List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity);
+            List<UUID> owners = WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity);
             if (!owners.isEmpty()) {
                 owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
                         .filter(Optional::isPresent)
                         .forEach(gameProfile -> texts.add(Text.of(String.format("%s",
                                 gameProfile.get()
-                                .getName()))));
+                                        .getName()))));
             }
 
             for (int i = 0; i < texts.size(); i++) {
@@ -67,7 +67,7 @@ public abstract class EntityRendererMixin<T extends Entity> {
                 matrices.scale(-0.025f, -0.025f, 0.025f);
 
                 Matrix4f matrix4f = matrices.peek().getPositionMatrix();
-                float g = WPITMod.MINECRAFT_CLIENT.options.getTextBackgroundOpacity(0.25f);
+                float g = WPITMod.MINECRAFT.options.getTextBackgroundOpacity(0.25f);
                 int j = (int) (g * 255.0f) << 24;
                 TextRenderer textRenderer = this.getTextRenderer();
                 float x = (float) -textRenderer.getWidth(text) / 2;

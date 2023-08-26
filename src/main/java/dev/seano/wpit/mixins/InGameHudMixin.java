@@ -40,14 +40,14 @@ public abstract class InGameHudMixin {
     @Inject(method = "render", at = @At("TAIL"))
     public void wpit$render(DrawContext context, float tickDelta, CallbackInfo ci) {
         if (canDisplay()) {
-            Optional<Entity> entity = WPITMod.RAY_TRACING.getTarget();
+            Optional<Entity> entity = WPITMod.INSTANCE.rayTracing.getTarget();
             if (entity.isPresent() && (entity.get() instanceof TameableEntity || entity.get() instanceof FoxEntity)) {
                 this.client.getProfiler().push("wpit tooltip");
 
                 List<Text> texts = new ArrayList<>();
                 texts.add(Text.translatable(entity.get().getType().getTranslationKey()));
 
-                List<UUID> owners = WPITMod.TAMEABLE_HELPER.getEntityOwners(entity.get());
+                List<UUID> owners = WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity.get());
                 if (!owners.isEmpty()) {
                     owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
                             .filter(Optional::isPresent)
