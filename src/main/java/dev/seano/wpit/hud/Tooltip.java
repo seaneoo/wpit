@@ -5,40 +5,47 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("SameParameterValue")
 @Environment(EnvType.CLIENT)
 public class Tooltip {
     private final MinecraftClient minecraftClient;
-    private final @Nullable Text text;
+    private final List<Text> textList;
 
-    public Tooltip(MinecraftClient minecraftClient, @Nullable Text text) {
+    public Tooltip(MinecraftClient minecraftClient, Text... texts) {
         this.minecraftClient = minecraftClient;
-        this.text = text;
+        this.textList = List.of(texts);
     }
 
     public void render(DrawContext drawContext) {
-        int textWidth = minecraftClient.textRenderer.getWidth(this.text);
+        Optional<Integer> maxTextWidth = textList.stream().map(minecraftClient.textRenderer::getWidth).max(Integer::compare);
         int textHeight = minecraftClient.textRenderer.fontHeight;
 
         int scaledWindowWidth = drawContext.getScaledWindowWidth();
-        int x = (scaledWindowWidth / 2) - (textWidth / 2);
+        int x = (scaledWindowWidth / 2) - (maxTextWidth.orElse(0) / 2);
         int y = 5;
+        int h = textList.size() * textHeight;
         int z = 0;
 
-        int i = x - 2;
-        int j = y - 2;
-        int k = textWidth + 5;
-        int l = textHeight + 4;
+        int tooltipX = x - 2;
+        int tooltipY = y - 2;
+        int tooltipW = maxTextWidth.orElse(0) + 5;
+        int tooltipH = h + 4;
 
-        drawContext.drawTextWithShadow(this.minecraftClient.textRenderer, this.text, x + 1, y + 1, 0xFFFFFF);
-        this.renderHorizontalLine(drawContext, i, j - 1, k, z, -267386864);
-        this.renderHorizontalLine(drawContext, i, j + l, k, z, -267386864);
-        this.renderRectangle(drawContext, i, j, k, l, z, -267386864);
-        this.renderVerticalLine(drawContext, i - 1, j, l, z, -267386864);
-        this.renderVerticalLine(drawContext, i + k, j, l, z, -267386864);
-        this.renderBorder(drawContext, i, j + 1, k, l, z, 0x505000FF, 1344798847);
+        for (int index = 0; index < textList.size(); index++) {
+            Text text = textList.get(index);
+            drawContext.drawTextWithShadow(this.minecraftClient.textRenderer, text, x + 1, (y + 1) + (index * textHeight), 0xFFFFFF);
+        }
+
+        this.renderHorizontalLine(drawContext, tooltipX, tooltipY - 1, tooltipW, z, -267386864);
+        this.renderHorizontalLine(drawContext, tooltipX, tooltipY + tooltipH, tooltipW, z, -267386864);
+        this.renderRectangle(drawContext, tooltipX, tooltipY, tooltipW, tooltipH, z, -267386864);
+        this.renderVerticalLine(drawContext, tooltipX - 1, tooltipY, tooltipH, z, -267386864);
+        this.renderVerticalLine(drawContext, tooltipX + tooltipW, tooltipY, tooltipH, z, -267386864);
+        this.renderBorder(drawContext, tooltipX, tooltipY + 1, tooltipW, tooltipH, z, 0x505000FF, 1344798847);
     }
 
     private void renderBorder(DrawContext context, int x, int y, int width, int height, int z, int startColor, int endColor) {
