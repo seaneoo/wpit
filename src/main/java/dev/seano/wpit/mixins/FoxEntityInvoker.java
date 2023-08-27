@@ -15,14 +15,18 @@ import java.util.UUID;
 public interface FoxEntityInvoker {
 
     /**
-     * Allows the {@link FoxEntity#OWNER} tracked data to be accessed.
+     * Allows the FoxEntity OWNER tracked data to be accessed.
      */
     @Accessor("OWNER")
-    TrackedData<Optional<UUID>> getOwnerData();
+    static TrackedData<Optional<UUID>> getOwnerData() {
+        throw new AssertionError();
+    }
 
     /**
-     * Allows the {@link FoxEntity#OTHER_TRUSTED} tracked data to be accessed.
+     * Allows the FoxEntity OTHER_TRUSTED tracked data to be accessed.
      */
     @Accessor("OTHER_TRUSTED")
-    TrackedData<Optional<UUID>> getOtherTrustedData();
+    static TrackedData<Optional<UUID>> getOtherTrustedData() {
+        throw new AssertionError();
+    }
 }

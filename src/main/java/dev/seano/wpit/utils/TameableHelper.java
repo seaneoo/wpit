@@ -1,12 +1,10 @@
 package dev.seano.wpit.utils;
 
 import com.google.common.collect.Lists;
-import dev.seano.wpit.WPITMod;
 import dev.seano.wpit.mixins.FoxEntityInvoker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.TameableEntity;
-import net.minecraft.text.Text;
 
 import java.util.*;
 
@@ -16,10 +14,9 @@ public class TameableHelper {
 
     private List<UUID> getFoxTrusted(FoxEntity foxEntity) {
         ArrayList<UUID> uuids = Lists.newArrayList();
-        uuids.add(foxEntity.getDataTracker().get(((FoxEntityInvoker) foxEntity).getOwnerData())
+        uuids.add(foxEntity.getDataTracker().get(FoxEntityInvoker.getOwnerData()).orElse(null));
+        uuids.add(foxEntity.getDataTracker().get(FoxEntityInvoker.getOtherTrustedData())
                 .orElse(null));
-        uuids.add(foxEntity.getDataTracker()
-                .get(((FoxEntityInvoker) foxEntity).getOtherTrustedData()).orElse(null));
         return uuids;
     }
 
