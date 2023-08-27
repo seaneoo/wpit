@@ -3,7 +3,6 @@ package dev.seano.wpit.mixins;
 import dev.seano.wpit.WPITConfig;
 import dev.seano.wpit.WPITMod;
 import dev.seano.wpit.hud.Tooltip;
-import dev.seano.wpit.utils.UserCache;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -19,7 +18,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Mixin(InGameHud.class)
 public abstract class InGameHudMixin {
@@ -49,15 +50,10 @@ public abstract class InGameHudMixin {
                     List<Text> texts = new ArrayList<>();
                     texts.add(Text.translatable(entity.get().getType().getTranslationKey()));
 
-                    List<UUID> owners =
-                            WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity.get());
-                    if (!owners.isEmpty()) {
-                        owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
-                                .filter(Optional::isPresent)
-                                .forEach(gameProfile -> texts.add(Text.of(String.format("§7%s",
-                                        gameProfile.get()
-                                                .getName()))));
-                    }
+                    List<String> names =
+                            WPITMod.INSTANCE.tameableHelper.getOwnerNames(entity.get());
+                    if (!names.isEmpty())
+                        names.forEach(s -> texts.add(Text.of(String.format("§7%s", s))));
 
                     new Tooltip(client, texts.toArray(Text[]::new)).render(context);
 

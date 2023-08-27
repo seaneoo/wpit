@@ -1,15 +1,14 @@
 package dev.seano.wpit.utils;
 
 import com.google.common.collect.Lists;
+import dev.seano.wpit.WPITMod;
 import dev.seano.wpit.mixins.FoxEntityInvoker;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.FoxEntity;
 import net.minecraft.entity.passive.TameableEntity;
+import net.minecraft.text.Text;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class TameableHelper {
     public TameableHelper() {
@@ -38,5 +37,19 @@ public class TameableHelper {
 //            }
         }
         return Collections.emptyList();
+    }
+
+    public List<String> getOwnerNames(Entity entity) {
+        List<String> names = new ArrayList<>();
+        List<UUID> owners = getEntityOwners(entity);
+
+        if (!owners.isEmpty()) {
+            owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
+                    .filter(Optional::isPresent)
+                    .forEach(gameProfile -> names.add(String.format("%s", gameProfile.get()
+                            .getName())));
+        }
+
+        return names;
     }
 }

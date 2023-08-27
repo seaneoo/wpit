@@ -52,14 +52,8 @@ public abstract class EntityRendererMixin<T extends Entity> {
             if (WPITConfig.mode != WPITConfig.DisplayMode.NAMEPLATE) return;
 
             List<Text> texts = new ArrayList<>();
-            List<UUID> owners = WPITMod.INSTANCE.tameableHelper.getEntityOwners(entity);
-            if (!owners.isEmpty()) {
-                owners.stream().filter(Objects::nonNull).map(UserCache::getProfile)
-                        .filter(Optional::isPresent)
-                        .forEach(gameProfile -> texts.add(Text.of(String.format("%s",
-                                gameProfile.get()
-                                        .getName()))));
-            }
+            List<String> names = WPITMod.INSTANCE.tameableHelper.getOwnerNames(entity);
+            if (!names.isEmpty()) names.forEach(s -> texts.add(Text.of(s)));
 
             for (int i = 0; i < texts.size(); i++) {
                 Text text = texts.get(i);
