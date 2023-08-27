@@ -2,5 +2,9 @@
   "wpit.midnightconfig.title": "Config",
   "wpit.midnightconfig.mode": "Mode",
   "wpit.midnightconfig.enum.DisplayMode.TOOLTIP": "Tooltip",
-  "wpit.midnightconfig.enum.DisplayMode.NAMEPLATE": "Nameplate"
+  "wpit.midnightconfig.enum.DisplayMode.NAMEPLATE": "Nameplate",
+  "wpit.midnightconfig.position": "Tooltip position",
+  "wpit.midnightconfig.enum.TooltipPosition.TOP_LEFT": "Top left",
+  "wpit.midnightconfig.enum.TooltipPosition.TOP_CENTER": "Top center",
+  "wpit.midnightconfig.enum.TooltipPosition.TOP_RIGHT": "Top right"
 }

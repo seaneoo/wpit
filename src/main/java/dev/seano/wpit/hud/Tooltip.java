@@ -20,6 +20,7 @@ public class Tooltip {
         this.textList = List.of(texts);
     }
 
+    /* TODO: Change position based on position value in config. */
     public void render(DrawContext drawContext) {
         Optional<Integer> maxTextWidth = textList.stream()
                 .map(minecraftClient.textRenderer::getWidth).max(Integer::compare);
