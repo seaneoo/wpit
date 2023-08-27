@@ -60,7 +60,10 @@ public abstract class EntityRendererMixin<T extends Entity> {
 
                 matrices.push();
 
-                matrices.translate(0f, entity.getNameLabelHeight(), 0f);
+                float translateY = entity.getNameLabelHeight() + (entity.hasCustomName() ? 0.25f
+                        : 0);
+
+                matrices.translate(0f, translateY, 0f);
                 matrices.multiply(this.dispatcher.getRotation());
                 matrices.scale(-0.025f, -0.025f, 0.025f);
 
