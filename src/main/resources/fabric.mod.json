@@ -23,6 +23,9 @@
   "entrypoints": {
     "client": [
       "dev.seano.wpit.WPITMod"
+    ],
+    "modmenu": [
+      "dev.seano.wpit.ModMenuImpl"
     ]
   },
   "mixins": [
