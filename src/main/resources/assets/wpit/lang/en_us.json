@@ -6,5 +6,6 @@
   "wpit.midnightconfig.position": "Tooltip position",
   "wpit.midnightconfig.enum.TooltipPosition.TOP_LEFT": "Top left",
   "wpit.midnightconfig.enum.TooltipPosition.TOP_CENTER": "Top center",
-  "wpit.midnightconfig.enum.TooltipPosition.TOP_RIGHT": "Top right"
+  "wpit.midnightconfig.enum.TooltipPosition.TOP_RIGHT": "Top right",
+  "wpit.midnightconfig.nameplateColor": "Nameplate color"
 }

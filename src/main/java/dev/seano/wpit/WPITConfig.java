@@ -10,6 +10,9 @@ public class WPITConfig extends MidnightConfig {
     @Entry(category = "text")
     public static TooltipPosition position = TooltipPosition.TOP_CENTER;
 
+    @Entry(category = "text", isColor = true)
+    public static String nameplateColor = "#ffffff";
+
     public enum DisplayMode {
         TOOLTIP, NAMEPLATE
     }

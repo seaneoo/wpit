@@ -2,7 +2,6 @@ package dev.seano.wpit.mixins;
 
 import dev.seano.wpit.WPITConfig;
 import dev.seano.wpit.WPITMod;
-import dev.seano.wpit.utils.UserCache;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -20,7 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Mixin(EntityRenderer.class)
 public abstract class EntityRendererMixin<T extends Entity> {
@@ -70,11 +70,14 @@ public abstract class EntityRendererMixin<T extends Entity> {
                 TextRenderer textRenderer = this.getTextRenderer();
                 float x = (float) -textRenderer.getWidth(text) / 2;
                 float y = -10 * i;
+
+                int color = Integer.parseInt(WPITConfig.nameplateColor.replaceAll("#", ""), 16);
+
                 this.getTextRenderer()
                         .draw(text, x, y, 0x20FFFFFF, false, matrix4f, vertexConsumers,
                                 TextRenderer.TextLayerType.NORMAL, j, light);
                 this.getTextRenderer()
-                        .draw(text, x, y, -1, false, matrix4f, vertexConsumers,
+                        .draw(text, x, y, color, false, matrix4f, vertexConsumers,
                                 TextRenderer.TextLayerType.NORMAL, 0, light);
 
                 matrices.pop();
