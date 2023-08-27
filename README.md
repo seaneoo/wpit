@@ -14,6 +14,17 @@ Beginning with version 2.0.0 (Minecraft 1.20+), WPIT only requires [Fabric API](
 
 You may run this mod alongside [Mod Menu](https://modrinth.com/mod/modmenu) to have access to the configuration screen (otherwise editing must be done in `config/wpit.json`).
 
+## Features
+
+- [X] Display the owner of cats, wolves, and parrots.
+- [X] Display the trusted players for foxes.
+- [X] Configuration options to switch between display modes, position, and colors.
+
+### Future
+
+- [ ] Display the owner of horses, llamas, etc.
+- [ ] Display the liked player for allays.
+
 ## License
 
 This mod is distributed under the Unlicense license. (see [LICENSE](LICENSE)). This license applies _only_ to my code. Third party libraries (including Fabric) may be licensed differently.
