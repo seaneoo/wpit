@@ -1,5 +1,6 @@
 package dev.seano.wpit.hud;
 
+import dev.seano.wpit.WPITConfig;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -20,21 +21,38 @@ public class Tooltip {
         this.textList = List.of(texts);
     }
 
-    /* TODO: Change position based on position value in config. */
+    private int width(int textWidth) {
+        return textWidth + 5;
+    }
+
+    private int xPosition(DrawContext drawContext, int textWidth) {
+        switch (WPITConfig.position) {
+            case TOP_LEFT -> {
+                return 5;
+            }
+            case TOP_CENTER -> {
+                return (drawContext.getScaledWindowWidth() / 2) - (textWidth / 2);
+            }
+            case TOP_RIGHT -> {
+                return drawContext.getScaledWindowWidth() - width(textWidth) - 1;
+            }
+        }
+        return 0;
+    }
+
     public void render(DrawContext drawContext) {
         Optional<Integer> maxTextWidth = textList.stream()
                 .map(minecraftClient.textRenderer::getWidth).max(Integer::compare);
         int textHeight = minecraftClient.textRenderer.fontHeight;
 
-        int scaledWindowWidth = drawContext.getScaledWindowWidth();
-        int x = (scaledWindowWidth / 2) - (maxTextWidth.orElse(0) / 2);
+        int x = xPosition(drawContext, maxTextWidth.orElse(0));
         int y = 5;
         int h = textList.size() * textHeight;
         int z = 0;
 
         int tooltipX = x - 2;
         int tooltipY = y - 2;
-        int tooltipW = maxTextWidth.orElse(0) + 5;
+        int tooltipW = width(maxTextWidth.orElse(0));
         int tooltipH = h + 4;
 
         for (int index = 0; index < textList.size(); index++) {
