@@ -48,7 +48,17 @@ public abstract class InGameHudMixin {
                     this.client.getProfiler().push("wpit tooltip");
 
                     List<Text> texts = new ArrayList<>();
-                    texts.add(Text.translatable(entity.get().getType().getTranslationKey()));
+
+                    String entityNameTranslated = Text.translatable(entity.get().getType()
+                            .getTranslationKey()).getString();
+
+                    if (entity.get().hasCustomName() && entity.get().getCustomName() != null) {
+                        texts.add(Text.of(String.format("%s (%s)", entityNameTranslated,
+                                entity.get()
+                                        .getCustomName().getString())));
+                    } else {
+                        texts.add(Text.of(entityNameTranslated));
+                    }
 
                     List<String> names =
                             WPITMod.INSTANCE.tameableHelper.getOwnerNames(entity.get());
